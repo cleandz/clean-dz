@@ -156,7 +156,7 @@ const ReportIssues = () => {
                       <Label htmlFor="type">نوع المشكلة</Label>
                       <Select 
                         onValueChange={(value) => handleSelectChange('type', value)}
-                        value={newReport.type}
+                        value={newReport.type || "select_problem_type"}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="اختر نوع المشكلة" />

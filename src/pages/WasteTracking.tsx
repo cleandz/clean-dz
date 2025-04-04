@@ -180,7 +180,7 @@ const WasteTracking = () => {
                     <Label htmlFor="type">نوع النفايات</Label>
                     <Select 
                       onValueChange={(value) => handleSelectChange('type', value)}
-                      value={newEntry.type}
+                      value={newEntry.type || "select_type"} 
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="اختر نوع النفايات" />
