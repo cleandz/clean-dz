@@ -20,7 +20,7 @@ interface CollectionPoint {
 
 const CollectionPoints = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [wasteTypeFilter, setWasteTypeFilter] = useState('');
+  const [wasteTypeFilter, setWasteTypeFilter] = useState('all');
   
   const collectionPoints: CollectionPoint[] = [
     {
@@ -65,7 +65,7 @@ const CollectionPoints = () => {
     const matchesSearch = point.name.includes(searchTerm) || 
                           point.address.includes(searchTerm);
     
-    const matchesWasteType = wasteTypeFilter === '' || 
+    const matchesWasteType = wasteTypeFilter === 'all' || 
                              point.wasteTypes.includes(wasteTypeFilter);
     
     return matchesSearch && matchesWasteType;
@@ -115,7 +115,7 @@ const CollectionPoints = () => {
                     </div>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">جميع الأنواع</SelectItem>
+                    <SelectItem value="all">جميع الأنواع</SelectItem>
                     {wasteTypeOptions.map((type) => (
                       <SelectItem key={type} value={type}>{type}</SelectItem>
                     ))}
