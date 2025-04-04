@@ -26,6 +26,13 @@ export const translations = {
     arabic: "العربية",
     english: "الإنجليزية",
     french: "الفرنسية",
+
+    // المصادقة
+    login: "تسجيل الدخول",
+    register: "إنشاء حساب",
+    logout: "تسجيل الخروج",
+    profile: "الملف الشخصي",
+    authentication: "المصادقة",
   },
   
   en: {
@@ -54,6 +61,13 @@ export const translations = {
     arabic: "Arabic",
     english: "English",
     french: "French",
+
+    // Authentication
+    login: "Login",
+    register: "Register",
+    logout: "Logout",
+    profile: "Profile",
+    authentication: "Authentication",
   },
   
   fr: {
@@ -82,6 +96,13 @@ export const translations = {
     arabic: "Arabe",
     english: "Anglais",
     french: "Français",
+
+    // Authentification
+    login: "Se connecter",
+    register: "S'inscrire",
+    logout: "Se déconnecter",
+    profile: "Profil",
+    authentication: "Authentification",
   }
 };
 

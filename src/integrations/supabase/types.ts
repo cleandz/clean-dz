@@ -9,7 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      algerian_regions: {
+        Row: {
+          id: number
+          name: string
+          name_ar: string
+          name_en: string
+          name_fr: string
+        }
+        Insert: {
+          id?: number
+          name: string
+          name_ar: string
+          name_en: string
+          name_fr: string
+        }
+        Update: {
+          id?: number
+          name?: string
+          name_ar?: string
+          name_en?: string
+          name_fr?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          region: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          region?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          region?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

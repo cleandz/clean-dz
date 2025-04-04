@@ -1,21 +1,45 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X, Globe, User, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
   DropdownMenuContent, 
-  DropdownMenuItem
+  DropdownMenuItem,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useLanguage, SupportedLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/i18n/translations';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { language, setLanguage } = useLanguage();
+  const { user, signOut } = useAuth();
   const { t } = useTranslation(language);
+
+  // Additional translations for auth-related items
+  const authTranslations = {
+    ar: {
+      profile: 'الملف الشخصي',
+      login: 'تسجيل الدخول',
+      logout: 'تسجيل الخروج',
+    },
+    en: {
+      profile: 'Profile',
+      login: 'Login',
+      logout: 'Logout',
+    },
+    fr: {
+      profile: 'Profil',
+      login: 'Se connecter',
+      logout: 'Se déconnecter',
+    }
+  };
+
+  const authT = authTranslations[language];
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -23,6 +47,10 @@ const Navbar = () => {
 
   const handleLanguageChange = (lang: SupportedLanguage) => {
     setLanguage(lang);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
   };
 
   return (
@@ -33,7 +61,45 @@ const Navbar = () => {
             <Link to="/" className="text-white text-xl font-bold">{t('siteTitle')}</Link>
           </div>
           
+          <div className="hidden md:block">
+            <div className={`flex items-baseline ${language === 'ar' ? 'space-x-reverse' : ''} space-x-4`}>
+              <Link to="/" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('home')}</Link>
+              <Link to="/waste-tracking" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('wasteTracking')}</Link>
+              <Link to="/report-issues" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('reportIssues')}</Link>
+              <Link to="/collection-points" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('collectionPoints')}</Link>
+              <Link to="/rewards" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('rewards')}</Link>
+            </div>
+          </div>
+          
           <div className="hidden md:flex items-center space-x-4">
+            {/* User menu for authenticated users */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-white">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'}>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile">{authT.profile}</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    {authT.logout}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth">
+                <Button variant="ghost" size="sm" className="text-white">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  {authT.login}
+                </Button>
+              </Link>
+            )}
+
+            {/* Language selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="text-white">
@@ -54,17 +120,28 @@ const Navbar = () => {
             </DropdownMenu>
           </div>
           
-          <div className="hidden md:block">
-            <div className={`flex items-baseline ${language === 'ar' ? 'space-x-reverse' : ''} space-x-4`}>
-              <Link to="/" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('home')}</Link>
-              <Link to="/waste-tracking" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('wasteTracking')}</Link>
-              <Link to="/report-issues" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('reportIssues')}</Link>
-              <Link to="/collection-points" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('collectionPoints')}</Link>
-              <Link to="/rewards" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('rewards')}</Link>
-            </div>
-          </div>
-          
           <div className="md:hidden flex items-center">
+            {/* Mobile User menu */}
+            {user && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-white mr-2">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'}>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile">{authT.profile}</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    {authT.logout}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+
+            {/* Mobile Language selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="text-white mr-2">
@@ -91,7 +168,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* القائمة المنسدلة للموبايل */}
+      {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden">
           <div className={`px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-primary-green ${language === 'ar' ? 'text-right' : 'text-left'}`}>
@@ -100,6 +177,13 @@ const Navbar = () => {
             <Link to="/report-issues" className="text-white hover:bg-primary-green-dark block px-3 py-2 rounded-md text-base font-medium">{t('reportIssues')}</Link>
             <Link to="/collection-points" className="text-white hover:bg-primary-green-dark block px-3 py-2 rounded-md text-base font-medium">{t('collectionPoints')}</Link>
             <Link to="/rewards" className="text-white hover:bg-primary-green-dark block px-3 py-2 rounded-md text-base font-medium">{t('rewards')}</Link>
+            
+            {/* Mobile login link if not authenticated */}
+            {!user && (
+              <Link to="/auth" className="text-white hover:bg-primary-green-dark block px-3 py-2 rounded-md text-base font-medium">
+                {authT.login}
+              </Link>
+            )}
           </div>
         </div>
       )}
