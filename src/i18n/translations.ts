@@ -33,6 +33,18 @@ export const translations = {
     logout: "تسجيل الخروج",
     profile: "الملف الشخصي",
     authentication: "المصادقة",
+    
+    // الإبلاغ عن المشكلات
+    reportProblem: "الإبلاغ عن مشكلة",
+    issueType: "نوع المشكلة",
+    issueLocation: "موقع المشكلة",
+    issueDescription: "وصف المشكلة",
+    uploadImage: "رفع صورة",
+    submit: "إرسال",
+    myReports: "بلاغاتي",
+    pending: "قيد الانتظار",
+    inProgress: "قيد المعالجة",
+    resolved: "تم الحل",
   },
   
   en: {
@@ -68,6 +80,18 @@ export const translations = {
     logout: "Logout",
     profile: "Profile",
     authentication: "Authentication",
+    
+    // Report Issues
+    reportProblem: "Report Problem",
+    issueType: "Issue Type",
+    issueLocation: "Issue Location",
+    issueDescription: "Issue Description",
+    uploadImage: "Upload Image",
+    submit: "Submit",
+    myReports: "My Reports",
+    pending: "Pending",
+    inProgress: "In Progress",
+    resolved: "Resolved",
   },
   
   fr: {
@@ -103,6 +127,18 @@ export const translations = {
     logout: "Se déconnecter",
     profile: "Profil",
     authentication: "Authentification",
+    
+    // Signaler des problèmes
+    reportProblem: "Signaler un Problème",
+    issueType: "Type de Problème",
+    issueLocation: "Emplacement du Problème",
+    issueDescription: "Description du Problème",
+    uploadImage: "Télécharger une Image",
+    submit: "Soumettre",
+    myReports: "Mes Signalements",
+    pending: "En Attente",
+    inProgress: "En Cours",
+    resolved: "Résolu",
   }
 };
 
