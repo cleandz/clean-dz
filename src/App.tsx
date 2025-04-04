@@ -10,26 +10,29 @@ import ReportIssues from "./pages/ReportIssues";
 import CollectionPoints from "./pages/CollectionPoints";
 import Rewards from "./pages/Rewards";
 import NotFound from "./pages/NotFound";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/waste-tracking" element={<WasteTracking />} />
-          <Route path="/report-issues" element={<ReportIssues />} />
-          <Route path="/collection-points" element={<CollectionPoints />} />
-          <Route path="/rewards" element={<Rewards />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/waste-tracking" element={<WasteTracking />} />
+            <Route path="/report-issues" element={<ReportIssues />} />
+            <Route path="/collection-points" element={<CollectionPoints />} />
+            <Route path="/rewards" element={<Rewards />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
