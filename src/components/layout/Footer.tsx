@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-lg font-semibold mb-4">{t('siteTitle')}</h3>
-            <p className="text-sm">تطبيق لإدارة النفايات المنزلية، يساعد في تحسين البيئة وتثمين النفايات</p>
+            <p className="text-sm">{t('appDescription')}</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4">{t('usefulLinks')}</h3>

@@ -11,6 +11,9 @@ export const translations = {
     // العنوان الرئيسي
     siteTitle: "وايست وايز عربيا",
     
+    // وصف التطبيق
+    appDescription: "تطبيق لإدارة النفايات المنزلية، يساعد في تحسين البيئة وتثمين النفايات",
+    
     // تذييل الصفحة
     usefulLinks: "روابط مفيدة",
     contactUs: "تواصل معنا",
@@ -36,6 +39,9 @@ export const translations = {
     // Main title
     siteTitle: "WasteWise Arabia",
     
+    // App description
+    appDescription: "An application for household waste management, helping to improve the environment and value waste",
+    
     // Footer
     usefulLinks: "Useful Links",
     contactUs: "Contact Us",
@@ -60,6 +66,9 @@ export const translations = {
     
     // Titre principal
     siteTitle: "WasteWise Arabie",
+    
+    // Description de l'application
+    appDescription: "Une application pour la gestion des déchets ménagers, aidant à améliorer l'environnement et à valoriser les déchets",
     
     // Pied de page
     usefulLinks: "Liens Utiles",

@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 // تعريف اللغات المدعومة
 export type SupportedLanguage = 'ar' | 'en' | 'fr';
@@ -34,6 +34,12 @@ const languageInfo = {
 // مزود سياق اللغة
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<SupportedLanguage>('ar');
+
+  // تعيين اتجاه الصفحة عند تحميل المكون
+  useEffect(() => {
+    document.documentElement.dir = languageInfo[language].dir;
+    document.documentElement.lang = language;
+  }, [language]);
 
   const setLanguage = (lang: SupportedLanguage) => {
     setLanguageState(lang);
