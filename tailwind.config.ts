@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -26,11 +27,21 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					green: {
+						light: '#66BB6A',
+						DEFAULT: '#4CAF50',
+						dark: '#1B5E20'
+					}
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					foreground: 'hsl(var(--secondary-foreground))',
+					blue: {
+						light: '#90CAF9',
+						DEFAULT: '#2196F3',
+						dark: '#0D47A1'
+					}
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -89,6 +100,9 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
+			},
+			fontFamily: {
+				tajawal: ['Tajawal', 'sans-serif'],
 			}
 		}
 	},
