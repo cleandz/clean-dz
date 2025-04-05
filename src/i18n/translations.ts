@@ -238,10 +238,13 @@ export const translations = {
   }
 };
 
+// Now we need to update the TypeScript type definition for translation keys
+type TranslationKey = keyof typeof translations.en;
+
 // هوك لاستخدام الترجمات
 export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
   return {
-    t: (key: keyof typeof translations.ar) => {
+    t: (key: TranslationKey) => {
       return translations[language][key] || key;
     }
   };
