@@ -9,7 +9,7 @@ export const translations = {
     rewards: "المكافآت",
     
     // العنوان الرئيسي
-    siteTitle: "وايست وايز عربيا",
+    siteTitle: "Clean DZ",
     
     // وصف التطبيق
     appDescription: "تطبيق لإدارة النفايات المنزلية، يساعد في تحسين البيئة وتثمين النفايات",
@@ -47,6 +47,36 @@ export const translations = {
     resolved: "تم الحل",
     declaration: "أصرح بأن المعلومات المقدمة صحيحة ودقيقة",
     errorUpload: "حدث خطأ أثناء رفع الصورة",
+    
+    // عناوين الأخطاء والنجاح
+    errorTitle: "خطأ",
+    errorFields: "يرجى ملء جميع الحقول المطلوبة",
+    loginRequired: "يجب تسجيل الدخول أولاً",
+    declarationRequired: "يجب الموافقة على الإقرار",
+    errorSubmit: "حدث خطأ أثناء إرسال البلاغ",
+    successTitle: "تم بنجاح",
+    successDescription: "تم إرسال البلاغ بنجاح",
+    
+    // صفحة التبليغات
+    blackSpot: "نقطة سوداء",
+    damagedContainers: "حاويات تالفة",
+    noCollection: "عدم جمع النفايات",
+    wasteLeakage: "تسرب نفايات",
+    other: "أخرى",
+    selectProblemType: "اختر نوع المشكلة",
+    enterLocation: "أدخل الموقع",
+    enterDescription: "أدخل وصفاً مفصلاً للمشكلة",
+    clickToAddImage: "انقر لإضافة صورة",
+    selected: "تم اختيار:",
+    image: "الصورة",
+    optional: "(اختياري)",
+    uploadingImage: "جاري رفع الصورة...",
+    reportDate: "تاريخ البلاغ:",
+    noReports: "لا توجد بلاغات حتى الآن",
+    usefulInfo: "معلومات مفيدة",
+    info1: "سيتم مراجعة البلاغ خلال 24 ساعة",
+    info2: "يمكنك متابعة حالة البلاغ من هنا",
+    info3: "سيتم إرسال إشعار عند معالجة البلاغ"
   },
   
   en: {
@@ -58,7 +88,7 @@ export const translations = {
     rewards: "Rewards",
     
     // Main title
-    siteTitle: "WasteWise Arabia",
+    siteTitle: "Clean DZ",
     
     // App description
     appDescription: "An application for household waste management, helping to improve the environment and value waste",
@@ -96,6 +126,36 @@ export const translations = {
     resolved: "Resolved",
     declaration: "I declare that the information provided is true and accurate",
     errorUpload: "Error uploading image",
+    
+    // Error and success titles
+    errorTitle: "Error",
+    errorFields: "Please fill in all required fields",
+    loginRequired: "Login required",
+    declarationRequired: "Agreement to the declaration is required",
+    errorSubmit: "Error submitting report",
+    successTitle: "Success",
+    successDescription: "Report submitted successfully",
+    
+    // Report Issues page
+    blackSpot: "Black Spot",
+    damagedContainers: "Damaged Containers",
+    noCollection: "No Waste Collection",
+    wasteLeakage: "Waste Leakage",
+    other: "Other",
+    selectProblemType: "Select problem type",
+    enterLocation: "Enter location",
+    enterDescription: "Enter a detailed description of the issue",
+    clickToAddImage: "Click to add image",
+    selected: "Selected:",
+    image: "Image",
+    optional: "(optional)",
+    uploadingImage: "Uploading image...",
+    reportDate: "Report date:",
+    noReports: "No reports yet",
+    usefulInfo: "Useful Information",
+    info1: "Your report will be reviewed within 24 hours",
+    info2: "You can track your report status here",
+    info3: "You will be notified when your report is addressed"
   },
   
   fr: {
@@ -107,7 +167,7 @@ export const translations = {
     rewards: "Récompenses",
     
     // Titre principal
-    siteTitle: "WasteWise Arabie",
+    siteTitle: "Clean DZ",
     
     // Description de l'application
     appDescription: "Une application pour la gestion des déchets ménagers, aidant à améliorer l'environnement et à valoriser les déchets",
@@ -145,6 +205,36 @@ export const translations = {
     resolved: "Résolu",
     declaration: "Je déclare que les informations fournies sont vraies et précises",
     errorUpload: "Erreur lors du téléchargement de l'image",
+    
+    // Titres d'erreur et de succès
+    errorTitle: "Erreur",
+    errorFields: "Veuillez remplir tous les champs obligatoires",
+    loginRequired: "Connexion requise",
+    declarationRequired: "L'accord à la déclaration est requis",
+    errorSubmit: "Erreur lors de l'envoi du signalement",
+    successTitle: "Succès",
+    successDescription: "Signalement envoyé avec succès",
+    
+    // Page de signalement des problèmes
+    blackSpot: "Point Noir",
+    damagedContainers: "Conteneurs Endommagés",
+    noCollection: "Pas de Collecte de Déchets",
+    wasteLeakage: "Fuite de Déchets",
+    other: "Autre",
+    selectProblemType: "Sélectionner le type de problème",
+    enterLocation: "Entrer l'emplacement",
+    enterDescription: "Entrer une description détaillée du problème",
+    clickToAddImage: "Cliquer pour ajouter une image",
+    selected: "Sélectionné:",
+    image: "Image",
+    optional: "(optionnel)",
+    uploadingImage: "Téléchargement de l'image...",
+    reportDate: "Date du signalement:",
+    noReports: "Aucun signalement pour l'instant",
+    usefulInfo: "Informations Utiles",
+    info1: "Votre signalement sera examiné dans les 24 heures",
+    info2: "Vous pouvez suivre l'état de votre signalement ici",
+    info3: "Vous serez notifié lorsque votre signalement sera traité"
   }
 };
 
