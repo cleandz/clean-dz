@@ -14,6 +14,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from '@/i18n/translations';
 
 interface Report {
   id: string;
@@ -31,6 +32,7 @@ const ReportIssues = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const [reports, setReports] = useState<Report[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -43,132 +45,6 @@ const ReportIssues = () => {
     description: '',
     imageFile: null as File | null,
   });
-
-  // Translations
-  const translations = {
-    ar: {
-      pageTitle: 'الإبلاغ عن المشكلات',
-      newReportTitle: 'إبلاغ جديد',
-      problemType: 'نوع المشكلة',
-      selectProblemType: 'اختر نوع المشكلة',
-      location: 'الموقع',
-      enterLocation: 'أدخل الموقع التفصيلي',
-      problemDescription: 'وصف المشكلة',
-      enterDescription: 'اكتب وصفاً تفصيلياً للمشكلة',
-      optional: '(اختياري)',
-      image: 'صورة',
-      clickToAddImage: 'انقر لإضافة صورة',
-      selected: 'تم اختيار:',
-      submit: 'إرسال البلاغ',
-      myReports: 'بلاغاتي',
-      noReports: 'لا توجد بلاغات حتى الآن',
-      blackSpot: 'نقطة سوداء',
-      damagedContainers: 'حاويات تالفة',
-      noCollection: 'عدم جمع النفايات',
-      wasteLeakage: 'تسرب نفايات',
-      other: 'أخرى',
-      pending: 'قيد الانتظار',
-      inProgress: 'قيد المعالجة',
-      resolved: 'تم الحل',
-      reportDate: 'تاريخ الإبلاغ:',
-      usefulInfo: 'معلومات مفيدة',
-      info1: 'سيتم مراجعة البلاغات خلال 24 ساعة من استلامها.',
-      info2: 'الصور تساعد في تسريع عملية معالجة البلاغات.',
-      info3: 'يمكنك متابعة حالة البلاغ من خلال قائمة "بلاغاتي".',
-      errorTitle: 'خطأ',
-      errorFields: 'يرجى ملء جميع الحقول المطلوبة',
-      successTitle: 'تم الإبلاغ بنجاح',
-      successDescription: 'سيتم مراجعة البلاغ في أقرب وقت ممكن',
-      loginRequired: 'يرجى تسجيل الدخول للإبلاغ عن المشكلات',
-      uploadingImage: 'جاري رفع الصورة...',
-      errorUpload: 'حدث خطأ أثناء رفع الصورة',
-      errorSubmit: 'حدث خطأ أثناء إرسال البلاغ',
-      declaration: 'أصرح بأن المعلومات المقدمة صحيحة ودقيقة',
-      declarationRequired: 'يجب الموافقة على التصريح قبل الإرسال',
-    },
-    en: {
-      pageTitle: 'Report Issues',
-      newReportTitle: 'New Report',
-      problemType: 'Problem Type',
-      selectProblemType: 'Select problem type',
-      location: 'Location',
-      enterLocation: 'Enter detailed location',
-      problemDescription: 'Problem Description',
-      enterDescription: 'Write a detailed description of the problem',
-      optional: '(optional)',
-      image: 'Image',
-      clickToAddImage: 'Click to add an image',
-      selected: 'Selected:',
-      submit: 'Submit Report',
-      myReports: 'My Reports',
-      noReports: 'No reports yet',
-      blackSpot: 'Black Spot',
-      damagedContainers: 'Damaged Containers',
-      noCollection: 'No Waste Collection',
-      wasteLeakage: 'Waste Leakage',
-      other: 'Other',
-      pending: 'Pending',
-      inProgress: 'In Progress',
-      resolved: 'Resolved',
-      reportDate: 'Report Date:',
-      usefulInfo: 'Useful Information',
-      info1: 'Reports will be reviewed within 24 hours of submission.',
-      info2: 'Images help expedite the process of handling reports.',
-      info3: 'You can track the status of your report through the "My Reports" list.',
-      errorTitle: 'Error',
-      errorFields: 'Please fill in all required fields',
-      successTitle: 'Report Submitted Successfully',
-      successDescription: 'Your report will be reviewed as soon as possible',
-      loginRequired: 'Please login to report issues',
-      uploadingImage: 'Uploading image...',
-      errorUpload: 'Error uploading image',
-      errorSubmit: 'Error submitting report',
-      declaration: 'I declare that the information provided is true and accurate',
-      declarationRequired: 'You must agree to the declaration before submitting',
-    },
-    fr: {
-      pageTitle: 'Signaler des Problèmes',
-      newReportTitle: 'Nouveau Signalement',
-      problemType: 'Type de Problème',
-      selectProblemType: 'Sélectionnez le type de problème',
-      location: 'Emplacement',
-      enterLocation: 'Entrez l\'emplacement détaillé',
-      problemDescription: 'Description du Problème',
-      enterDescription: 'Rédigez une description détaillée du problème',
-      optional: '(optionnel)',
-      image: 'Image',
-      clickToAddImage: 'Cliquez pour ajouter une image',
-      selected: 'Sélectionné:',
-      submit: 'Soumettre le Signalement',
-      myReports: 'Mes Signalements',
-      noReports: 'Pas encore de signalements',
-      blackSpot: 'Point Noir',
-      damagedContainers: 'Conteneurs Endommagés',
-      noCollection: 'Pas de Collecte de Déchets',
-      wasteLeakage: 'Fuite de Déchets',
-      other: 'Autre',
-      pending: 'En Attente',
-      inProgress: 'En Cours',
-      resolved: 'Résolu',
-      reportDate: 'Date de Signalement:',
-      usefulInfo: 'Informations Utiles',
-      info1: 'Les signalements seront examinés dans les 24 heures suivant leur soumission.',
-      info2: 'Les images aident à accélérer le processus de traitement des signalements.',
-      info3: 'Vous pouvez suivre l\'état de votre signalement via la liste "Mes Signalements".',
-      errorTitle: 'Erreur',
-      errorFields: 'Veuillez remplir tous les champs obligatoires',
-      successTitle: 'Signalement Soumis avec Succès',
-      successDescription: 'Votre signalement sera examiné dès que possible',
-      loginRequired: 'Veuillez vous connecter pour signaler des problèmes',
-      uploadingImage: 'Téléchargement de l\'image...',
-      errorUpload: 'Erreur lors du téléchargement de l\'image',
-      errorSubmit: 'Erreur lors de la soumission du signalement',
-      declaration: 'Je déclare que les informations fournies sont vraies et précises',
-      declarationRequired: 'Vous devez accepter la déclaration avant de soumettre',
-    }
-  };
-
-  const t = translations[language];
 
   // Check if user is logged in
   useEffect(() => {
@@ -236,14 +112,6 @@ const ReportIssues = () => {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `${user?.id}/${fileName}`;
-      
-      const { data: bucketExists } = await supabase.storage.getBucket('issue_reports');
-      if (!bucketExists) {
-        await supabase.storage.createBucket('issue_reports', {
-          public: true,
-          fileSizeLimit: 5242880 // 5MB
-        });
-      }
       
       const { error: uploadError } = await supabase.storage
         .from('issue_reports')
@@ -422,7 +290,7 @@ const ReportIssues = () => {
       
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-6">{t.pageTitle}</h1>
+          <h1 className="text-3xl font-bold mb-6">{t.reportIssues}</h1>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
@@ -430,13 +298,13 @@ const ReportIssues = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-red-500" />
-                    <span>{t.newReportTitle}</span>
+                    <span>{t.reportProblem}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="type">{t.problemType}</Label>
+                      <Label htmlFor="type">{t.issueType}</Label>
                       <Select 
                         onValueChange={(value) => handleSelectChange('type', value)}
                         value={newReport.type || undefined}
@@ -465,7 +333,7 @@ const ReportIssues = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="location">{t.location}</Label>
+                      <Label htmlFor="location">{t.issueLocation}</Label>
                       <div className="relative">
                         <Input 
                           id="location" 
@@ -480,7 +348,7 @@ const ReportIssues = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="description">{t.problemDescription}</Label>
+                      <Label htmlFor="description">{t.issueDescription}</Label>
                       <Textarea 
                         id="description" 
                         name="description" 
@@ -523,7 +391,7 @@ const ReportIssues = () => {
                         htmlFor="declaration" 
                         className="text-sm leading-none pt-0.5 cursor-pointer"
                       >
-                        {translations[language].declaration}
+                        {t.declaration}
                       </Label>
                     </div>
                     

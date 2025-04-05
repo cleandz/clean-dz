@@ -46,6 +46,7 @@ export const translations = {
     inProgress: "قيد المعالجة",
     resolved: "تم الحل",
     declaration: "أصرح بأن المعلومات المقدمة صحيحة ودقيقة",
+    errorUpload: "حدث خطأ أثناء رفع الصورة",
   },
   
   en: {
@@ -94,6 +95,7 @@ export const translations = {
     inProgress: "In Progress",
     resolved: "Resolved",
     declaration: "I declare that the information provided is true and accurate",
+    errorUpload: "Error uploading image",
   },
   
   fr: {
@@ -142,6 +144,7 @@ export const translations = {
     inProgress: "En Cours",
     resolved: "Résolu",
     declaration: "Je déclare que les informations fournies sont vraies et précises",
+    errorUpload: "Erreur lors du téléchargement de l'image",
   }
 };
 
