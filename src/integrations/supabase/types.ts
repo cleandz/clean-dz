@@ -102,39 +102,6 @@ export type Database = {
         }
         Relationships: []
       }
-      waste_entries: {
-        Row: {
-          created_at: string
-          date: string
-          id: string
-          recyclable: boolean | null
-          updated_at: string
-          user_id: string
-          waste_type: string
-          weight: number
-        }
-        Insert: {
-          created_at?: string
-          date: string
-          id?: string
-          recyclable?: boolean | null
-          updated_at?: string
-          user_id: string
-          waste_type: string
-          weight: number
-        }
-        Update: {
-          created_at?: string
-          date?: string
-          id?: string
-          recyclable?: boolean | null
-          updated_at?: string
-          user_id?: string
-          waste_type?: string
-          weight?: number
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
