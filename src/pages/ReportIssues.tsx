@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Camera, MapPin, Send, AlertTriangle, Loader2, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -50,8 +51,8 @@ const ReportIssues = () => {
   useEffect(() => {
     if (!user) {
       toast({
-        title: t.errorTitle,
-        description: t.loginRequired,
+        title: t('errorTitle'),
+        description: t('loginRequired'),
         variant: "destructive",
       });
       navigate('/auth');
@@ -127,8 +128,8 @@ const ReportIssues = () => {
     } catch (error) {
       console.error('Error uploading image:', error);
       toast({
-        title: t.errorTitle,
-        description: t.errorUpload,
+        title: t('errorTitle'),
+        description: t('errorUpload'),
         variant: "destructive",
       });
       return null;
@@ -140,8 +141,8 @@ const ReportIssues = () => {
   const submitReport = async () => {
     if (!user) {
       toast({
-        title: t.errorTitle,
-        description: t.loginRequired,
+        title: t('errorTitle'),
+        description: t('loginRequired'),
         variant: "destructive",
       });
       navigate('/auth');
@@ -150,8 +151,8 @@ const ReportIssues = () => {
     
     if (!newReport.type || !newReport.location || !newReport.description) {
       toast({
-        title: t.errorTitle,
-        description: t.errorFields,
+        title: t('errorTitle'),
+        description: t('errorFields'),
         variant: "destructive",
       });
       return;
@@ -159,8 +160,8 @@ const ReportIssues = () => {
 
     if (!declarationChecked) {
       toast({
-        title: t.errorTitle,
-        description: t.declarationRequired,
+        title: t('errorTitle'),
+        description: t('declarationRequired'),
         variant: "destructive",
       });
       return;
@@ -201,8 +202,8 @@ const ReportIssues = () => {
       setDeclarationChecked(false);
       
       toast({
-        title: t.successTitle,
-        description: t.successDescription,
+        title: t('successTitle'),
+        description: t('successDescription'),
       });
       
       fetchReports();
@@ -210,8 +211,8 @@ const ReportIssues = () => {
     } catch (error) {
       console.error('Error submitting report:', error);
       toast({
-        title: t.errorTitle,
-        description: t.errorSubmit,
+        title: t('errorTitle'),
+        description: t('errorSubmit'),
         variant: "destructive",
       });
     } finally {
@@ -235,11 +236,11 @@ const ReportIssues = () => {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'pending':
-        return t.pending;
+        return t('pending');
       case 'inProgress':
-        return t.inProgress;
+        return t('inProgress');
       case 'resolved':
-        return t.resolved;
+        return t('resolved');
       default:
         return status;
     }
@@ -290,7 +291,7 @@ const ReportIssues = () => {
       
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-6">{t.reportIssues}</h1>
+          <h1 className="text-3xl font-bold mb-6">{t('reportIssues')}</h1>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
@@ -298,47 +299,47 @@ const ReportIssues = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-red-500" />
-                    <span>{t.reportProblem}</span>
+                    <span>{t('reportProblem')}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="type">{t.issueType}</Label>
+                      <Label htmlFor="type">{t('issueType')}</Label>
                       <Select 
                         onValueChange={(value) => handleSelectChange('type', value)}
                         value={newReport.type || undefined}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder={t.selectProblemType} />
+                          <SelectValue placeholder={t('selectProblemType')} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value={language === 'ar' ? 'نقطة سوداء' : (language === 'en' ? 'Black Spot' : 'Point Noir')}>
-                            {t.blackSpot}
+                            {t('blackSpot')}
                           </SelectItem>
                           <SelectItem value={language === 'ar' ? 'حاويات تالفة' : (language === 'en' ? 'Damaged Containers' : 'Conteneurs Endommagés')}>
-                            {t.damagedContainers}
+                            {t('damagedContainers')}
                           </SelectItem>
                           <SelectItem value={language === 'ar' ? 'عدم جمع النفايات' : (language === 'en' ? 'No Waste Collection' : 'Pas de Collecte de Déchets')}>
-                            {t.noCollection}
+                            {t('noCollection')}
                           </SelectItem>
                           <SelectItem value={language === 'ar' ? 'تسرب نفايات' : (language === 'en' ? 'Waste Leakage' : 'Fuite de Déchets')}>
-                            {t.wasteLeakage}
+                            {t('wasteLeakage')}
                           </SelectItem>
                           <SelectItem value={language === 'ar' ? 'أخرى' : (language === 'en' ? 'Other' : 'Autre')}>
-                            {t.other}
+                            {t('other')}
                           </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     
                     <div>
-                      <Label htmlFor="location">{t.issueLocation}</Label>
+                      <Label htmlFor="location">{t('issueLocation')}</Label>
                       <div className="relative">
                         <Input 
                           id="location" 
                           name="location" 
-                          placeholder={t.enterLocation} 
+                          placeholder={t('enterLocation')} 
                           value={newReport.location} 
                           onChange={handleInputChange}
                           className={`${language === 'ar' ? 'pr-10' : 'pl-10'}`}
@@ -348,11 +349,11 @@ const ReportIssues = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="description">{t.issueDescription}</Label>
+                      <Label htmlFor="description">{t('issueDescription')}</Label>
                       <Textarea 
                         id="description" 
                         name="description" 
-                        placeholder={t.enterDescription} 
+                        placeholder={t('enterDescription')} 
                         rows={4}
                         value={newReport.description} 
                         onChange={handleInputChange}
@@ -360,11 +361,11 @@ const ReportIssues = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="image">{t.image} {t.optional}</Label>
+                      <Label htmlFor="image">{t('image')} {t('optional')}</Label>
                       <div className="mt-1 flex items-center">
                         <label htmlFor="image" className="cursor-pointer border rounded p-4 w-full text-center hover:bg-gray-50 transition">
                           <Camera className="h-6 w-6 mx-auto mb-2 text-gray-400" />
-                          <span className="text-sm text-gray-500">{t.clickToAddImage}</span>
+                          <span className="text-sm text-gray-500">{t('clickToAddImage')}</span>
                           <Input 
                             id="image" 
                             type="file" 
@@ -376,7 +377,7 @@ const ReportIssues = () => {
                       </div>
                       {newReport.imageFile && (
                         <p className="mt-2 text-sm text-gray-600">
-                          {t.selected} {newReport.imageFile.name}
+                          {t('selected')} {newReport.imageFile.name}
                         </p>
                       )}
                     </div>
@@ -391,7 +392,7 @@ const ReportIssues = () => {
                         htmlFor="declaration" 
                         className="text-sm leading-none pt-0.5 cursor-pointer"
                       >
-                        {t.declaration}
+                        {t('declaration')}
                       </Label>
                     </div>
                     
@@ -403,11 +404,11 @@ const ReportIssues = () => {
                       {(isSubmitting || isUploading) ? (
                         <>
                           <Loader2 className={`${language === 'ar' ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />
-                          {isUploading ? t.uploadingImage : t.submit}
+                          {isUploading ? t('uploadingImage') : t('submit')}
                         </>
                       ) : (
                         <>
-                          <Send className={`${language === 'ar' ? 'ml-2' : 'mr-2'} h-4 w-4`} /> {t.submit}
+                          <Send className={`${language === 'ar' ? 'ml-2' : 'mr-2'} h-4 w-4`} /> {t('submit')}
                         </>
                       )}
                     </Button>
@@ -419,7 +420,7 @@ const ReportIssues = () => {
             <div>
               <Card>
                 <CardHeader>
-                  <CardTitle>{t.myReports}</CardTitle>
+                  <CardTitle>{t('myReports')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {isLoading ? (
@@ -451,7 +452,7 @@ const ReportIssues = () => {
                             </div>
                           )}
                           <div className="text-xs text-gray-400">
-                            {t.reportDate} {formatDate(report.created_at)}
+                            {t('reportDate')} {formatDate(report.created_at)}
                           </div>
                         </div>
                       ))}
@@ -459,7 +460,7 @@ const ReportIssues = () => {
                   ) : (
                     <div className="text-center py-8 text-gray-500">
                       <AlertTriangle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                      <p>{t.noReports}</p>
+                      <p>{t('noReports')}</p>
                     </div>
                   )}
                 </CardContent>
@@ -467,7 +468,7 @@ const ReportIssues = () => {
               
               <Card className="mt-6">
                 <CardHeader>
-                  <CardTitle>{t.usefulInfo}</CardTitle>
+                  <CardTitle>{t('usefulInfo')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
@@ -475,19 +476,19 @@ const ReportIssues = () => {
                       <div className="bg-primary/10 p-1 rounded-full h-6 w-6 flex items-center justify-center shrink-0">
                         <span className="text-primary">1</span>
                       </div>
-                      <p>{t.info1}</p>
+                      <p>{t('info1')}</p>
                     </li>
                     <li className="flex gap-2">
                       <div className="bg-primary/10 p-1 rounded-full h-6 w-6 flex items-center justify-center shrink-0">
                         <span className="text-primary">2</span>
                       </div>
-                      <p>{t.info2}</p>
+                      <p>{t('info2')}</p>
                     </li>
                     <li className="flex gap-2">
                       <div className="bg-primary/10 p-1 rounded-full h-6 w-6 flex items-center justify-center shrink-0">
                         <span className="text-primary">3</span>
                       </div>
-                      <p>{t.info3}</p>
+                      <p>{t('info3')}</p>
                     </li>
                   </ul>
                 </CardContent>
