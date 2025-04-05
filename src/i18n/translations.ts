@@ -55,7 +55,7 @@ export const translations = {
     declarationRequired: "يجب الموافقة على الإقرار",
     errorSubmit: "حدث خطأ أثناء إرسال البلاغ",
     successTitle: "تم بنجاح",
-    successDescription: "تمت العملية بنجاح",
+    successDescription: "تم إرسال البلاغ بنجاح",
     
     // صفحة التبليغات
     blackSpot: "نقطة سوداء",
@@ -76,33 +76,7 @@ export const translations = {
     usefulInfo: "معلومات مفيدة",
     info1: "سيتم مراجعة البلاغ خلال 24 ساعة",
     info2: "يمكنك متابعة حالة البلاغ من هنا",
-    info3: "سيتم إرسال إشعار عند معالجة البلاغ",
-    
-    // صفحة تتبع النفايات
-    totalWaste: "إجمالي النفايات",
-    recyclable: "قابل للتدوير",
-    nonRecyclable: "غير قابل للتدوير",
-    kg: "كغ",
-    addNewRecord: "إضافة سجل جديد",
-    date: "التاريخ",
-    wasteType: "نوع النفايات",
-    weight: "الوزن",
-    selectWasteType: "اختر نوع النفايات",
-    plastic: "بلاستيك",
-    paper: "ورق",
-    glass: "زجاج",
-    metal: "معدن",
-    food: "طعام",
-    addRecord: "إضافة سجل",
-    wasteRecords: "سجلات النفايات",
-    type: "النوع",
-    action: "إجراء",
-    yes: "نعم",
-    no: "لا",
-    noRecordsYet: "لا توجد سجلات بعد",
-    saveReport: "حفظ التقرير",
-    loading: "جاري التحميل...",
-    entryDeleted: "تم حذف السجل بنجاح"
+    info3: "سيتم إرسال إشعار عند معالجة البلاغ"
   },
   
   en: {
@@ -160,7 +134,7 @@ export const translations = {
     declarationRequired: "Agreement to the declaration is required",
     errorSubmit: "Error submitting report",
     successTitle: "Success",
-    successDescription: "Operation completed successfully",
+    successDescription: "Report submitted successfully",
     
     // Report Issues page
     blackSpot: "Black Spot",
@@ -181,33 +155,7 @@ export const translations = {
     usefulInfo: "Useful Information",
     info1: "Your report will be reviewed within 24 hours",
     info2: "You can track your report status here",
-    info3: "You will be notified when your report is addressed",
-    
-    // Waste Tracking page
-    totalWaste: "Total Waste",
-    recyclable: "Recyclable",
-    nonRecyclable: "Non-Recyclable",
-    kg: "kg",
-    addNewRecord: "Add New Record",
-    date: "Date",
-    wasteType: "Waste Type",
-    weight: "Weight",
-    selectWasteType: "Select waste type",
-    plastic: "Plastic",
-    paper: "Paper",
-    glass: "Glass",
-    metal: "Metal",
-    food: "Food",
-    addRecord: "Add Record",
-    wasteRecords: "Waste Records",
-    type: "Type",
-    action: "Action",
-    yes: "Yes",
-    no: "No",
-    noRecordsYet: "No records yet",
-    saveReport: "Save Report",
-    loading: "Loading...",
-    entryDeleted: "Record deleted successfully"
+    info3: "You will be notified when your report is addressed"
   },
   
   fr: {
@@ -265,7 +213,7 @@ export const translations = {
     declarationRequired: "L'accord à la déclaration est requis",
     errorSubmit: "Erreur lors de l'envoi du signalement",
     successTitle: "Succès",
-    successDescription: "Opération réussie",
+    successDescription: "Signalement envoyé avec succès",
     
     // Page de signalement des problèmes
     blackSpot: "Point Noir",
@@ -286,33 +234,7 @@ export const translations = {
     usefulInfo: "Informations Utiles",
     info1: "Votre signalement sera examiné dans les 24 heures",
     info2: "Vous pouvez suivre l'état de votre signalement ici",
-    info3: "Vous serez notifié lorsque votre signalement sera traité",
-    
-    // Page de suivi des déchets
-    totalWaste: "Total des Déchets",
-    recyclable: "Recyclable",
-    nonRecyclable: "Non Recyclable",
-    kg: "kg",
-    addNewRecord: "Ajouter un Nouvel Enregistrement",
-    date: "Date",
-    wasteType: "Type de Déchet",
-    weight: "Poids",
-    selectWasteType: "Sélectionner le type de déchet",
-    plastic: "Plastique",
-    paper: "Papier",
-    glass: "Verre",
-    metal: "Métal",
-    food: "Aliments",
-    addRecord: "Ajouter un Enregistrement",
-    wasteRecords: "Registre des Déchets",
-    type: "Type",
-    action: "Action",
-    yes: "Oui",
-    no: "Non",
-    noRecordsYet: "Aucun enregistrement pour l'instant",
-    saveReport: "Sauvegarder le Rapport",
-    loading: "Chargement...",
-    entryDeleted: "Enregistrement supprimé avec succès"
+    info3: "Vous serez notifié lorsque votre signalement sera traité"
   }
 };
 
