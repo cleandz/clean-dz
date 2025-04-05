@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
-import { Camera, MapPin, Send, AlertTriangle, Loader2 } from 'lucide-react';
+import { Camera, MapPin, Send, AlertTriangle, Loader2, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/components/ui/use-toast';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -23,6 +23,7 @@ interface Report {
   status: 'pending' | 'inProgress' | 'resolved';
   image_url?: string | null;
   created_at: string;
+  user_id: string;
 }
 
 const ReportIssues = () => {
@@ -34,6 +35,7 @@ const ReportIssues = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [declarationChecked, setDeclarationChecked] = useState(false);
 
   const [newReport, setNewReport] = useState({
     type: '',
@@ -80,7 +82,9 @@ const ReportIssues = () => {
       loginRequired: 'يرجى تسجيل الدخول للإبلاغ عن المشكلات',
       uploadingImage: 'جاري رفع الصورة...',
       errorUpload: 'حدث خطأ أثناء رفع الصورة',
-      errorSubmit: 'حدث خطأ أثناء إرسال البلاغ'
+      errorSubmit: 'حدث خطأ أثناء إرسال البلاغ',
+      declaration: 'أصرح بأن المعلومات المقدمة صحيحة ودقيقة',
+      declarationRequired: 'يجب الموافقة على التصريح قبل الإرسال',
     },
     en: {
       pageTitle: 'Report Issues',
@@ -118,7 +122,9 @@ const ReportIssues = () => {
       loginRequired: 'Please login to report issues',
       uploadingImage: 'Uploading image...',
       errorUpload: 'Error uploading image',
-      errorSubmit: 'Error submitting report'
+      errorSubmit: 'Error submitting report',
+      declaration: 'I declare that the information provided is true and accurate',
+      declarationRequired: 'You must agree to the declaration before submitting',
     },
     fr: {
       pageTitle: 'Signaler des Problèmes',
@@ -156,7 +162,9 @@ const ReportIssues = () => {
       loginRequired: 'Veuillez vous connecter pour signaler des problèmes',
       uploadingImage: 'Téléchargement de l\'image...',
       errorUpload: 'Erreur lors du téléchargement de l\'image',
-      errorSubmit: 'Erreur lors de la soumission du signalement'
+      errorSubmit: 'Erreur lors de la soumission du signalement',
+      declaration: 'Je déclare que les informations fournies sont vraies et précises',
+      declarationRequired: 'Vous devez accepter la déclaration avant de soumettre',
     }
   };
 
@@ -185,11 +193,12 @@ const ReportIssues = () => {
       const { data, error } = await supabase
         .from('issue_reports')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
         
       if (error) throw error;
       
-      setReports(data as Report[]);
+      setReports(data as unknown as Report[]);
     } catch (error) {
       console.error('Error fetching reports:', error);
     } finally {
@@ -228,7 +237,6 @@ const ReportIssues = () => {
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `${user?.id}/${fileName}`;
       
-      // Check if storage bucket exists, if not create it
       const { data: bucketExists } = await supabase.storage.getBucket('issue_reports');
       if (!bucketExists) {
         await supabase.storage.createBucket('issue_reports', {
@@ -281,12 +289,20 @@ const ReportIssues = () => {
       return;
     }
 
+    if (!declarationChecked) {
+      toast({
+        title: t.errorTitle,
+        description: t.declarationRequired,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
       let imageUrl = null;
       
-      // Upload image if provided
       if (newReport.imageFile) {
         imageUrl = await uploadImage(newReport.imageFile);
         if (!imageUrl) {
@@ -295,32 +311,32 @@ const ReportIssues = () => {
         }
       }
       
-      // Insert report into database
-      const { error } = await supabase.from('issue_reports').insert({
-        user_id: user.id,
-        type: newReport.type,
-        location: newReport.location,
-        description: newReport.description,
-        image_url: imageUrl,
-        status: 'pending'
-      });
+      const { error } = await supabase
+        .from('issue_reports')
+        .insert({
+          user_id: user.id,
+          type: newReport.type,
+          location: newReport.location,
+          description: newReport.description,
+          image_url: imageUrl,
+          status: 'pending'
+        } as any);
       
       if (error) throw error;
       
-      // Reset the form
       setNewReport({
         type: '',
         location: '',
         description: '',
         imageFile: null
       });
+      setDeclarationChecked(false);
       
       toast({
         title: t.successTitle,
         description: t.successDescription,
       });
       
-      // Refresh reports list
       fetchReports();
       
     } catch (error) {
@@ -388,7 +404,6 @@ const ReportIssues = () => {
     }
   };
 
-  // Format date based on language
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     switch (language) {
@@ -496,6 +511,20 @@ const ReportIssues = () => {
                           {t.selected} {newReport.imageFile.name}
                         </p>
                       )}
+                    </div>
+                    
+                    <div className="flex items-start space-x-2">
+                      <Checkbox 
+                        id="declaration" 
+                        checked={declarationChecked}
+                        onCheckedChange={(checked) => setDeclarationChecked(checked as boolean)}
+                      />
+                      <Label 
+                        htmlFor="declaration" 
+                        className="text-sm leading-none pt-0.5 cursor-pointer"
+                      >
+                        {translations[language].declaration}
+                      </Label>
                     </div>
                     
                     <Button 

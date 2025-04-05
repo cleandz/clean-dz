@@ -45,6 +45,7 @@ export const translations = {
     pending: "قيد الانتظار",
     inProgress: "قيد المعالجة",
     resolved: "تم الحل",
+    declaration: "أصرح بأن المعلومات المقدمة صحيحة ودقيقة",
   },
   
   en: {
@@ -92,6 +93,7 @@ export const translations = {
     pending: "Pending",
     inProgress: "In Progress",
     resolved: "Resolved",
+    declaration: "I declare that the information provided is true and accurate",
   },
   
   fr: {
@@ -139,6 +141,7 @@ export const translations = {
     pending: "En Attente",
     inProgress: "En Cours",
     resolved: "Résolu",
+    declaration: "Je déclare que les informations fournies sont vraies et précises",
   }
 };
 
