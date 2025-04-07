@@ -31,20 +31,41 @@ const languageInfo = {
   }
 };
 
+// استخراج اللغة المفضلة من المتصفح
+const getBrowserLanguage = (): SupportedLanguage => {
+  const browserLang = navigator.language.split('-')[0];
+  if (browserLang === 'ar') return 'ar';
+  if (browserLang === 'fr') return 'fr';
+  return 'en'; // اللغة الافتراضية
+};
+
 // مزود سياق اللغة
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguageState] = useState<SupportedLanguage>('ar');
+  // تحديد اللغة الأولية من التخزين المحلي أو المتصفح
+  const storedLanguage = localStorage.getItem('preferredLanguage') as SupportedLanguage;
+  const initialLanguage = storedLanguage || getBrowserLanguage();
+  const [language, setLanguageState] = useState<SupportedLanguage>(initialLanguage);
 
   // تعيين اتجاه الصفحة عند تحميل المكون
   useEffect(() => {
     document.documentElement.dir = languageInfo[language].dir;
     document.documentElement.lang = language;
+    localStorage.setItem('preferredLanguage', language);
+    
+    // تطبيق الأنماط على المستند كاملًا
+    const body = document.body;
+    if (language === 'ar') {
+      body.classList.add('font-tajawal');
+    } else {
+      body.classList.remove('font-tajawal');
+    }
   }, [language]);
 
   const setLanguage = (lang: SupportedLanguage) => {
     setLanguageState(lang);
     document.documentElement.dir = languageInfo[lang].dir;
     document.documentElement.lang = lang;
+    localStorage.setItem('preferredLanguage', lang);
   };
 
   const formatNumber = (num: number) => {

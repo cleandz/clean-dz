@@ -1,4 +1,3 @@
-
 export const translations = {
   ar: {
     // الصفحة الرئيسية
@@ -54,8 +53,12 @@ export const translations = {
     loginRequired: "يجب تسجيل الدخول أولاً",
     declarationRequired: "يجب الموافقة على الإقرار",
     errorSubmit: "حدث خطأ أثناء إرسال البلاغ",
+    errorFetching: "حدث خطأ أثناء جلب البيانات",
+    errorDelete: "حدث خطأ أثناء حذف السجل",
     successTitle: "تم بنجاح",
     successDescription: "تم إرسال البلاغ بنجاح",
+    wasteEntryAdded: "تمت إضافة سجل النفايات بنجاح",
+    entryDeleted: "تم حذف السجل بنجاح",
     
     // صفحة التبليغات
     blackSpot: "نقطة سوداء",
@@ -76,7 +79,35 @@ export const translations = {
     usefulInfo: "معلومات مفيدة",
     info1: "سيتم مراجعة البلاغ خلال 24 ساعة",
     info2: "يمكنك متابعة حالة البلاغ من هنا",
-    info3: "سيتم إرسال إشعار عند معالجة البلاغ"
+    info3: "سيتم إرسال إشعار عند معالجة البلاغ",
+    
+    // صفحة تتبع النفايات
+    addNewRecord: "إضافة سجل جديد",
+    date: "التاريخ",
+    wasteType: "نوع النفايات",
+    weight: "الوزن",
+    kg: "كغ",
+    recyclable: "قابل ��لتدوير",
+    action: "إجراء",
+    addRecord: "إضافة سجل",
+    wasteRecords: "سجلات النفايات",
+    totalWaste: "إجمالي النفايات",
+    nonRecyclable: "غير قابل للتدوير",
+    yes: "نعم",
+    no: "لا",
+    selectWasteType: "اختر نوع النفايات",
+    adding: "جاري الإضافة...",
+    saveReport: "حفظ التقرير",
+    noRecordsYet: "لا توجد سجلات بعد",
+    startAddingWaste: "ابدأ بإضافة سجلات النفايات الخاصة بك",
+    type: "النوع",
+    
+    // أنواع النفايات
+    plastic: "بلاستيك",
+    paper: "ورق",
+    glass: "زجاج",
+    metal: "معدن",
+    food: "طعام"
   },
   
   en: {
@@ -133,8 +164,12 @@ export const translations = {
     loginRequired: "Login required",
     declarationRequired: "Agreement to the declaration is required",
     errorSubmit: "Error submitting report",
+    errorFetching: "Error fetching data",
+    errorDelete: "Error deleting record",
     successTitle: "Success",
     successDescription: "Report submitted successfully",
+    wasteEntryAdded: "Waste entry added successfully",
+    entryDeleted: "Record deleted successfully",
     
     // Report Issues page
     blackSpot: "Black Spot",
@@ -155,7 +190,35 @@ export const translations = {
     usefulInfo: "Useful Information",
     info1: "Your report will be reviewed within 24 hours",
     info2: "You can track your report status here",
-    info3: "You will be notified when your report is addressed"
+    info3: "You will be notified when your report is addressed",
+    
+    // Waste Tracking page
+    addNewRecord: "Add New Record",
+    date: "Date",
+    wasteType: "Waste Type",
+    weight: "Weight",
+    kg: "kg",
+    recyclable: "Recyclable",
+    action: "Action",
+    addRecord: "Add Record",
+    wasteRecords: "Waste Records",
+    totalWaste: "Total Waste",
+    nonRecyclable: "Non-Recyclable",
+    yes: "Yes",
+    no: "No",
+    selectWasteType: "Select waste type",
+    adding: "Adding...",
+    saveReport: "Save Report",
+    noRecordsYet: "No records yet",
+    startAddingWaste: "Start adding your waste records",
+    type: "Type",
+    
+    // Waste types
+    plastic: "Plastic",
+    paper: "Paper",
+    glass: "Glass",
+    metal: "Metal",
+    food: "Food"
   },
   
   fr: {
@@ -212,8 +275,12 @@ export const translations = {
     loginRequired: "Connexion requise",
     declarationRequired: "L'accord à la déclaration est requis",
     errorSubmit: "Erreur lors de l'envoi du signalement",
+    errorFetching: "Erreur lors de la récupération des données",
+    errorDelete: "Erreur lors de la suppression de l'enregistrement",
     successTitle: "Succès",
     successDescription: "Signalement envoyé avec succès",
+    wasteEntryAdded: "Entrée de déchets ajoutée avec succès",
+    entryDeleted: "Enregistrement supprimé avec succès",
     
     // Page de signalement des problèmes
     blackSpot: "Point Noir",
@@ -234,7 +301,35 @@ export const translations = {
     usefulInfo: "Informations Utiles",
     info1: "Votre signalement sera examiné dans les 24 heures",
     info2: "Vous pouvez suivre l'état de votre signalement ici",
-    info3: "Vous serez notifié lorsque votre signalement sera traité"
+    info3: "Vous serez notifié lorsque votre signalement sera traité",
+    
+    // Page de suivi des déchets
+    addNewRecord: "Ajouter un Nouvel Enregistrement",
+    date: "Date",
+    wasteType: "Type de Déchet",
+    weight: "Poids",
+    kg: "kg",
+    recyclable: "Recyclable",
+    action: "Action",
+    addRecord: "Ajouter un Enregistrement",
+    wasteRecords: "Registres des Déchets",
+    totalWaste: "Total des Déchets",
+    nonRecyclable: "Non-Recyclable",
+    yes: "Oui",
+    no: "Non",
+    selectWasteType: "Sélectionner le type de déchet",
+    adding: "Ajout en cours...",
+    saveReport: "Enregistrer le Rapport",
+    noRecordsYet: "Aucun enregistrement pour l'instant",
+    startAddingWaste: "Commencez à ajouter vos enregistrements de déchets",
+    type: "Type",
+    
+    // Types de déchets
+    plastic: "Plastique",
+    paper: "Papier",
+    glass: "Verre",
+    metal: "Métal",
+    food: "Nourriture"
   }
 };
 
