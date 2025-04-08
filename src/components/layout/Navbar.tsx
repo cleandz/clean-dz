@@ -10,14 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 import { useLanguage, SupportedLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/i18n/translations';
 import { useAuth } from '@/contexts/AuthContext';
@@ -67,55 +59,15 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="text-white text-xl font-bold">{t('siteTitle')}</Link>
-            
-            {/* Desktop Menubar */}
-            <div className="hidden md:block ml-6">
-              <Menubar className="bg-transparent border-none">
-                <MenubarMenu>
-                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('home')}</MenubarTrigger>
-                  <MenubarContent>
-                    <MenubarItem asChild>
-                      <Link to="/">{t('home')}</Link>
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-                
-                <MenubarMenu>
-                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('wasteTracking')}</MenubarTrigger>
-                  <MenubarContent>
-                    <MenubarItem asChild>
-                      <Link to="/waste-tracking">{t('wasteTracking')}</Link>
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-                
-                <MenubarMenu>
-                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('reportIssues')}</MenubarTrigger>
-                  <MenubarContent>
-                    <MenubarItem asChild>
-                      <Link to="/report-issues">{t('reportIssues')}</Link>
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-                
-                <MenubarMenu>
-                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('collectionPoints')}</MenubarTrigger>
-                  <MenubarContent>
-                    <MenubarItem asChild>
-                      <Link to="/collection-points">{t('collectionPoints')}</Link>
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-                
-                <MenubarMenu>
-                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('rewards')}</MenubarTrigger>
-                  <MenubarContent>
-                    <MenubarItem asChild>
-                      <Link to="/rewards">{t('rewards')}</Link>
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-              </Menubar>
+          </div>
+          
+          <div className="hidden md:block">
+            <div className={`flex items-baseline ${language === 'ar' ? 'space-x-reverse' : ''} space-x-4`}>
+              <Link to="/" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('home')}</Link>
+              <Link to="/waste-tracking" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('wasteTracking')}</Link>
+              <Link to="/report-issues" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('reportIssues')}</Link>
+              <Link to="/collection-points" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('collectionPoints')}</Link>
+              <Link to="/rewards" className="text-white hover:bg-primary-green-dark px-3 py-2 rounded-md text-sm font-medium">{t('rewards')}</Link>
             </div>
           </div>
           

@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
-import { AdminUser } from '@/types/supabase';
 
 interface AdminContextType {
   isAdmin: boolean;
@@ -26,7 +25,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
 
     setIsLoading(true);
     try {
-      // Use the generic query method to avoid type issues
+      // Check if user has admin role in admin_users table
       const { data, error } = await supabase
         .from('admin_users')
         .select('*')
@@ -37,9 +36,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         console.error('Error checking admin status:', error);
         setIsAdmin(false);
       } else {
-        // Cast the data to AdminUser type to safely access the role property
-        const adminUser = data as AdminUser;
-        setIsAdmin(adminUser?.role === 'admin');
+        setIsAdmin(data?.role === 'admin');
       }
     } catch (error) {
       console.error('Error checking admin status:', error);

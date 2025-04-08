@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Camera, MapPin, Send, AlertTriangle, Loader2, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -326,7 +327,7 @@ const ReportIssues = () => {
                             {t('wasteLeakage')}
                           </SelectItem>
                           <SelectItem value={language === 'ar' ? 'أخرى' : (language === 'en' ? 'Other' : 'Autre')}>
-                            {t('otherWaste')}
+                            {t('other')}
                           </SelectItem>
                         </SelectContent>
                       </Select>
