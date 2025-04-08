@@ -1,3 +1,4 @@
+
 export const translations = {
   ar: {
     // الصفحة الرئيسية
@@ -5,7 +6,6 @@ export const translations = {
     wasteTracking: "تتبع النفايات",
     reportIssues: "الإبلاغ عن المشكلات",
     collectionPoints: "نقاط الجمع",
-    rewards: "المكافآت",
     
     // العنوان الرئيسي
     siteTitle: "Clean DZ",
@@ -138,7 +138,76 @@ export const translations = {
     rewardsDesc: "كسب نقاط مقابل إعادة التدوير",
     joinUsToday: "انضم إلينا اليوم",
     joinUsDescription: "ساعد في جعل بيئتنا أكثر نظافة واستدامة",
-    startNow: "ابدأ الآن"
+    startNow: "ابدأ الآن",
+    
+    // Error
+    error: {
+      title: "خطأ"
+    },
+    
+    // Success
+    success: {
+      title: "تم بنجاح"
+    },
+    
+    // Auth
+    auth: {
+      loginRequired: "يجب تسجيل الدخول أولاً"
+    },
+    
+    // Common
+    common: {
+      loading: "جاري التحميل..."
+    },
+    
+    // Navigation
+    navigation: {
+      rewards: "المكافآت"
+    },
+    
+    // Rewards system
+    rewards: {
+      recyclingPoints: "نقاط إعادة التدوير",
+      reportingPoints: "نقاط الإبلاغ",
+      interactionPoints: "نقاط التفاعل",
+      pointsRedeemed: "النقاط المستبدلة",
+      errorFetchingData: "خطأ في تحميل بيانات المكافآت الخاصة بك",
+      notEnoughPoints: "نقاط غير كافية",
+      youNeed: "أنت بحاجة إلى",
+      morePoints: "المزيد من النقاط",
+      rewardRedeemed: "تم استبدال المكافأة",
+      rewardRedeemedMessage: "تم استبدال المكافأة بنجاح:",
+      errorRedeemingReward: "خطأ في استبدال المكافأة",
+      beginner: "مبتدئ",
+      active: "نشط",
+      advanced: "متقدم",
+      expert: "خبير",
+      currentBalance: "الرصيد الحالي",
+      currentLevel: "المستوى الحالي",
+      pointsToNextLevel: "نقاط للمستوى التالي",
+      availableRewards: "المكافآت المتاحة",
+      pointsHistory: "تاريخ النقاط",
+      achievements: "الإنجازات",
+      redeem: "استبدال",
+      noRewardsAvailable: "لا توجد مكافآت متاحة",
+      checkBackLater: "تحقق لاحقًا للحصول على مكافآت جديدة",
+      noPointHistory: "لا يوجد تاريخ نقاط متاح",
+      yourAchievements: "إنجازاتك",
+      wasteCollector: "جامع النفايات",
+      wasteCollectorDesc: "جمع وتتبع 50 كج من النفايات",
+      points: "نقاط",
+      environmentMonitor: "مراقب البيئة",
+      environmentMonitorDesc: "الإبلاغ عن 5 قضايا بيئية",
+      ecoFriend: "صديق البيئة",
+      ecoFriendDesc: "اكسب 500 نقطة إجمالية",
+      activeChallenges: "التحديات النشطة",
+      zeroWasteChallenge: "تحدي صفر نفايات",
+      zeroWasteChallengeDesc: "سجل نفاياتك لمدة 10 أيام متتالية",
+      days: "أيام",
+      ecoEducator: "معلم بيئي",
+      ecoEducatorDesc: "شارك 5 نصائح بيئية مع الآخرين",
+      shares: "مشاركات"
+    }
   },
   
   en: {
@@ -243,6 +312,14 @@ export const translations = {
     startAddingWaste: "Start adding your waste records",
     type: "Type",
     
+    // Waste types
+    plastic: "Plastic",
+    paper: "Paper",
+    glass: "Glass",
+    metal: "Metal",
+    food: "Food",
+    otherWaste: "Other",
+    
     // Bottom navigation
     statistics: "Statistics",
     settings: "Settings",
@@ -258,15 +335,48 @@ export const translations = {
     manageReports: "Manage Reports",
     analytics: "Analytics",
     
-    // Waste types
-    plastic: "Plastic",
-    paper: "Paper",
-    glass: "Glass",
-    metal: "Metal",
-    food: "Food",
-    otherWaste: "Other",
+    // Stats and home page
+    quickStats: "Quick Stats",
+    collectedWaste: "Collected Waste",
+    ton: "ton",
+    recycledMaterials: "Recycled Materials",
+    resolvedReports: "Resolved Reports",
+    ourServices: "Our Services",
+    wasteTrackingDesc: "Track and manage household waste",
+    details: "Details",
+    reportIssuesDesc: "Report waste-related issues",
+    collectionPointsDesc: "Find waste collection points",
+    rewardsDesc: "Earn points for recycling",
+    joinUsToday: "Join Us Today",
+    joinUsDescription: "Help make our environment cleaner and more sustainable",
+    startNow: "Start Now",
     
-    // Rewards
+    // Error
+    error: {
+      title: "Error"
+    },
+    
+    // Success
+    success: {
+      title: "Success"
+    },
+    
+    // Auth
+    auth: {
+      loginRequired: "You need to login first"
+    },
+    
+    // Common
+    common: {
+      loading: "Loading..."
+    },
+    
+    // Navigation
+    navigation: {
+      rewards: "Rewards"
+    },
+    
+    // Rewards system
     rewards: {
       recyclingPoints: "Recycling Points",
       reportingPoints: "Reporting Points",
@@ -308,26 +418,6 @@ export const translations = {
       ecoEducator: "Eco Educator",
       ecoEducatorDesc: "Share 5 environmental tips with others",
       shares: "shares"
-    },
-    
-    // Error
-    error: {
-      title: "Error"
-    },
-    
-    // Success
-    success: {
-      title: "Success"
-    },
-    
-    // Auth
-    auth: {
-      loginRequired: "You need to login first"
-    },
-    
-    // Common
-    common: {
-      loading: "Loading..."
     }
   },
   
@@ -448,15 +538,48 @@ export const translations = {
     manageReports: "Gérer les Signalements",
     analytics: "Analyses",
     
-    // Types de déchets
-    plastic: "Plastique",
-    paper: "Papier",
-    glass: "Verre",
-    metal: "Métal",
-    food: "Nourriture",
-    otherWaste: "Autre",
+    // Stats and home page
+    quickStats: "Statistiques Rapides",
+    collectedWaste: "Déchets Collectés",
+    ton: "tonne",
+    recycledMaterials: "Matériaux Recyclés",
+    resolvedReports: "Signalements Résolus",
+    ourServices: "Nos Services",
+    wasteTrackingDesc: "Suivre et gérer les déchets ménagers",
+    details: "Détails",
+    reportIssuesDesc: "Signaler des problèmes liés aux déchets",
+    collectionPointsDesc: "Trouver des points de collecte de déchets",
+    rewardsDesc: "Gagner des points pour le recyclage",
+    joinUsToday: "Rejoignez-nous Aujourd'hui",
+    joinUsDescription: "Aidez à rendre notre environnement plus propre et plus durable",
+    startNow: "Commencer Maintenant",
     
-    // Rewards
+    // Error
+    error: {
+      title: "Erreur"
+    },
+    
+    // Success
+    success: {
+      title: "Succès"
+    },
+    
+    // Auth
+    auth: {
+      loginRequired: "Vous devez vous connecter d'abord"
+    },
+    
+    // Common
+    common: {
+      loading: "Chargement..."
+    },
+    
+    // Navigation
+    navigation: {
+      rewards: "Récompenses"
+    },
+    
+    // Rewards system
     rewards: {
       recyclingPoints: "Points de Recyclage",
       reportingPoints: "Points de Signalement",
@@ -498,38 +621,41 @@ export const translations = {
       ecoEducator: "Éducateur Écologique",
       ecoEducatorDesc: "Partagez 5 conseils environnementaux avec d'autres",
       shares: "partages"
-    },
-    
-    // Error
-    error: {
-      title: "Erreur"
-    },
-    
-    // Success
-    success: {
-      title: "Succès"
-    },
-    
-    // Auth
-    auth: {
-      loginRequired: "Vous devez vous connecter d'abord"
-    },
-    
-    // Common
-    common: {
-      loading: "Chargement..."
     }
   }
 };
 
-// Define the TypeScript type for translation keys
-export type TranslationKey = keyof typeof translations.en;
+// Define the TypeScript type for translation keys to include nested structures
+export type TranslationKey = 
+  | keyof typeof translations.en
+  | `error.${keyof typeof translations.en.error}`
+  | `success.${keyof typeof translations.en.success}`
+  | `auth.${keyof typeof translations.en.auth}`
+  | `common.${keyof typeof translations.en.common}`
+  | `rewards.${keyof typeof translations.en.rewards}`
+  | `navigation.${keyof typeof translations.en.navigation}`;
 
 // هوك لاستخدام الترجمات
 export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
   return {
     t: (key: TranslationKey) => {
-      return translations[language][key] || key;
+      // Handle nested keys (those with dots)
+      if (key.includes('.')) {
+        const [section, subKey] = key.split('.') as [
+          keyof typeof translations[typeof language], 
+          string
+        ];
+        
+        // Access nested properties
+        const sectionObj = translations[language][section];
+        if (sectionObj && typeof sectionObj === 'object' && subKey in sectionObj) {
+          return (sectionObj as any)[subKey];
+        }
+        return key;
+      }
+      
+      // Handle regular keys
+      return translations[language][key as keyof typeof translations[typeof language]] || key;
     }
   };
 };

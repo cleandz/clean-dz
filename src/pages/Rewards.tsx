@@ -12,31 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { Database } from '@/integrations/supabase/types';
-
-interface Reward {
-  id: string;
-  name: {
-    ar: string;
-    en: string;
-    fr: string;
-  };
-  description: {
-    ar: string;
-    en: string;
-    fr: string;
-  };
-  points_required: number;
-  reward_type: string;
-  image_url: string | null;
-}
-
-interface UserPoints {
-  total_points: number;
-  recycling_points: number;
-  reporting_points: number;
-  interaction_points: number;
-}
+import { Reward, UserPoints } from '@/types/supabase';
 
 interface PointTransaction {
   date: string;
@@ -52,6 +28,8 @@ const Rewards = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [userPoints, setUserPoints] = useState<UserPoints>({
+    id: '',
+    user_id: '',
     total_points: 0,
     recycling_points: 0,
     reporting_points: 0,
@@ -105,6 +83,8 @@ const Rewards = () => {
       // Update states with fetched data
       if (pointsData) {
         setUserPoints({
+          id: pointsData.id,
+          user_id: pointsData.user_id,
           total_points: pointsData.total_points || 0,
           recycling_points: pointsData.recycling_points || 0,
           reporting_points: pointsData.reporting_points || 0,
@@ -113,7 +93,20 @@ const Rewards = () => {
       }
 
       if (rewardsData) {
-        setAvailableRewards(rewardsData as Reward[]);
+        // Type cast to handle JSON fields
+        const typedRewards: Reward[] = rewardsData.map(reward => ({
+          id: reward.id,
+          name: reward.name as { ar: string; en: string; fr: string },
+          description: reward.description as { ar: string; en: string; fr: string },
+          points_required: reward.points_required,
+          reward_type: reward.reward_type,
+          image_url: reward.image_url,
+          active: reward.active,
+          created_at: reward.created_at,
+          updated_at: reward.updated_at
+        }));
+        
+        setAvailableRewards(typedRewards);
       }
 
       if (transactionsData) {
@@ -187,7 +180,8 @@ const Rewards = () => {
         .insert({
           user_id: user.id,
           reward_id: reward.id,
-          points_spent: reward.points_required
+          points_spent: reward.points_required,
+          status: 'claimed'
         });
 
       if (error) throw error;
