@@ -1,4 +1,5 @@
 
+
 // Add or update any type definitions here as needed
 export interface UserPoints {
   id: string;
@@ -20,3 +21,22 @@ export interface Reward {
   created_at: string;
   updated_at: string;
 }
+
+// Add the missing AdminUser type
+export interface AdminUser {
+  id: string;
+  role: string;
+}
+
+// Add the missing WasteEntry type
+export interface WasteEntry {
+  id: string;
+  user_id: string;
+  date: string;
+  waste_type: string;
+  weight: number;
+  recyclable: boolean | null;
+  created_at: string;
+  updated_at: string;
+}
+

@@ -657,3 +657,4 @@ export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
     }
   };
 };
+
