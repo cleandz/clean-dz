@@ -632,10 +632,10 @@ export type TranslationKey =
   | `navigation.${keyof typeof translations.en.navigation}`
   | `rewards.${keyof typeof translations.en.rewards}`;
 
-// هوك لاستخدام الترجمات
+// Hook for using translations
 export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
   return {
-    t: (key: TranslationKey) => {
+    t: (key: TranslationKey): string => {
       // Handle nested keys (those with dots)
       if (key.includes('.')) {
         const [section, subKey] = key.split('.') as [
@@ -652,7 +652,8 @@ export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
       }
       
       // Handle regular keys
-      return translations[language][key as keyof typeof translations[typeof language]] || key;
+      const translation = translations[language][key as keyof typeof translations[typeof language]];
+      return translation !== undefined ? String(translation) : key;
     }
   };
 };

@@ -94,7 +94,7 @@ const Rewards = () => {
 
       if (rewardsData) {
         // Type cast to handle JSON fields
-        const typedRewards: Reward[] = rewardsData.map(reward => ({
+        const typedRewards: Reward[] = rewardsData.map((reward: any) => ({
           id: reward.id,
           name: reward.name as { ar: string; en: string; fr: string },
           description: reward.description as { ar: string; en: string; fr: string },
