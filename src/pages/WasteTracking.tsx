@@ -193,7 +193,7 @@ const WasteTracking = () => {
       case 'زجاج': return t('glass');
       case 'معدن': return t('metal');
       case 'طعام': return t('food');
-      case 'أخرى': return t('other');
+      case 'أخرى': return t('otherWaste');
       default: return type;
     }
   };
@@ -282,7 +282,7 @@ const WasteTracking = () => {
                     <SelectItem value="زجاج">{t('glass')}</SelectItem>
                     <SelectItem value="معدن">{t('metal')}</SelectItem>
                     <SelectItem value="طعام">{t('food')}</SelectItem>
-                    <SelectItem value="أخرى">{t('other')}</SelectItem>
+                    <SelectItem value="أخرى">{t('otherWaste')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
