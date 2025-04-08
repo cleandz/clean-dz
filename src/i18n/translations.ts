@@ -1,4 +1,3 @@
-
 export const translations = {
   ar: {
     // الصفحة الرئيسية
@@ -267,21 +266,69 @@ export const translations = {
     food: "Food",
     otherWaste: "Other",
     
-    // Stats and home page
-    quickStats: "Quick Stats",
-    collectedWaste: "Collected Waste",
-    ton: "ton",
-    recycledMaterials: "Recycled Materials",
-    resolvedReports: "Resolved Reports",
-    ourServices: "Our Services",
-    wasteTrackingDesc: "Track and manage your household waste",
-    details: "Details",
-    reportIssuesDesc: "Report waste-related issues",
-    collectionPointsDesc: "Find waste collection points",
-    rewardsDesc: "Earn points for recycling",
-    joinUsToday: "Join Us Today",
-    joinUsDescription: "Help make our environment cleaner and more sustainable",
-    startNow: "Start Now"
+    // Rewards
+    rewards: {
+      recyclingPoints: "Recycling Points",
+      reportingPoints: "Reporting Points",
+      interactionPoints: "Interaction Points",
+      pointsRedeemed: "Points Redeemed",
+      errorFetchingData: "Error loading your rewards data",
+      notEnoughPoints: "Not Enough Points",
+      youNeed: "You need",
+      morePoints: "more points",
+      rewardRedeemed: "Reward Redeemed",
+      rewardRedeemedMessage: "You've successfully redeemed:",
+      errorRedeemingReward: "Error redeeming your reward",
+      beginner: "Beginner",
+      active: "Active",
+      advanced: "Advanced",
+      expert: "Expert",
+      currentBalance: "Current Balance",
+      currentLevel: "Current Level",
+      pointsToNextLevel: "points to next level",
+      availableRewards: "Available Rewards",
+      pointsHistory: "Points History",
+      achievements: "Achievements",
+      redeem: "Redeem",
+      noRewardsAvailable: "No Rewards Available",
+      checkBackLater: "Check back later for new rewards",
+      noPointHistory: "No points history available",
+      yourAchievements: "Your Achievements",
+      wasteCollector: "Waste Collector",
+      wasteCollectorDesc: "Collect and track 50 kg of waste",
+      points: "points",
+      environmentMonitor: "Environment Monitor",
+      environmentMonitorDesc: "Report 5 environmental issues",
+      ecoFriend: "Eco Friend",
+      ecoFriendDesc: "Earn 500 total points",
+      activeChallenges: "Active Challenges",
+      zeroWasteChallenge: "Zero Waste Challenge",
+      zeroWasteChallengeDesc: "Log your waste for 10 consecutive days",
+      days: "days",
+      ecoEducator: "Eco Educator",
+      ecoEducatorDesc: "Share 5 environmental tips with others",
+      shares: "shares"
+    },
+    
+    // Error
+    error: {
+      title: "Error"
+    },
+    
+    // Success
+    success: {
+      title: "Success"
+    },
+    
+    // Auth
+    auth: {
+      loginRequired: "You need to login first"
+    },
+    
+    // Common
+    common: {
+      loading: "Loading..."
+    }
   },
   
   fr: {
@@ -409,21 +456,69 @@ export const translations = {
     food: "Nourriture",
     otherWaste: "Autre",
     
-    // Stats and home page
-    quickStats: "Statistiques Rapides",
-    collectedWaste: "Déchets Collectés",
-    ton: "tonne",
-    recycledMaterials: "Matériaux Recyclés",
-    resolvedReports: "Signalements Résolus",
-    ourServices: "Nos Services",
-    wasteTrackingDesc: "Suivre et gérer vos déchets ménagers",
-    details: "Détails",
-    reportIssuesDesc: "Signaler des problèmes liés aux déchets",
-    collectionPointsDesc: "Trouver des points de collecte des déchets",
-    rewardsDesc: "Gagnez des points pour le recyclage",
-    joinUsToday: "Rejoignez-nous Aujourd'hui",
-    joinUsDescription: "Aidez à rendre notre environnement plus propre et plus durable",
-    startNow: "Commencer Maintenant"
+    // Rewards
+    rewards: {
+      recyclingPoints: "Points de Recyclage",
+      reportingPoints: "Points de Signalement",
+      interactionPoints: "Points d'Interaction",
+      pointsRedeemed: "Points Échangés",
+      errorFetchingData: "Erreur lors du chargement de vos données de récompenses",
+      notEnoughPoints: "Points Insuffisants",
+      youNeed: "Vous avez besoin de",
+      morePoints: "points supplémentaires",
+      rewardRedeemed: "Récompense Échangée",
+      rewardRedeemedMessage: "Vous avez échangé avec succès :",
+      errorRedeemingReward: "Erreur lors de l'échange de votre récompense",
+      beginner: "Débutant",
+      active: "Actif",
+      advanced: "Avancé",
+      expert: "Expert",
+      currentBalance: "Solde Actuel",
+      currentLevel: "Niveau Actuel",
+      pointsToNextLevel: "points pour le niveau suivant",
+      availableRewards: "Récompenses Disponibles",
+      pointsHistory: "Historique des Points",
+      achievements: "Réalisations",
+      redeem: "Échanger",
+      noRewardsAvailable: "Aucune Récompense Disponible",
+      checkBackLater: "Revenez plus tard pour de nouvelles récompenses",
+      noPointHistory: "Aucun historique de points disponible",
+      yourAchievements: "Vos Réalisations",
+      wasteCollector: "Collecteur de Déchets",
+      wasteCollectorDesc: "Collectez et suivez 50 kg de déchets",
+      points: "points",
+      environmentMonitor: "Moniteur Environnemental",
+      environmentMonitorDesc: "Signalez 5 problèmes environnementaux",
+      ecoFriend: "Ami de l'Écologie",
+      ecoFriendDesc: "Gagnez 500 points au total",
+      activeChallenges: "Défis Actifs",
+      zeroWasteChallenge: "Défi Zéro Déchet",
+      zeroWasteChallengeDesc: "Enregistrez vos déchets pendant 10 jours consécutifs",
+      days: "jours",
+      ecoEducator: "Éducateur Écologique",
+      ecoEducatorDesc: "Partagez 5 conseils environnementaux avec d'autres",
+      shares: "partages"
+    },
+    
+    // Error
+    error: {
+      title: "Erreur"
+    },
+    
+    // Success
+    success: {
+      title: "Succès"
+    },
+    
+    // Auth
+    auth: {
+      loginRequired: "Vous devez vous connecter d'abord"
+    },
+    
+    // Common
+    common: {
+      loading: "Chargement..."
+    }
   }
 };
 
