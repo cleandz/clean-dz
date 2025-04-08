@@ -212,7 +212,6 @@ export const translations = {
     wasteTracking: "Waste Tracking",
     reportIssues: "Report Issues",
     collectionPoints: "Collection Points",
-    rewards: "Rewards",
     
     // Main title
     siteTitle: "Clean DZ",
@@ -419,7 +418,6 @@ export const translations = {
     wasteTracking: "Suivi des Déchets",
     reportIssues: "Signaler des Problèmes",
     collectionPoints: "Points de Collecte",
-    rewards: "Récompenses",
     
     // Titre principal
     siteTitle: "Clean DZ",
