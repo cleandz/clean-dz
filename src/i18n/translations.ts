@@ -6,7 +6,6 @@ export const translations = {
     wasteTracking: "تتبع النفايات",
     reportIssues: "الإبلاغ عن المشكلات",
     collectionPoints: "نقاط الجمع",
-    rewards: "المكافآت",
     
     // العنوان الرئيسي
     siteTitle: "Clean DZ",
@@ -657,4 +656,3 @@ export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
     }
   };
 };
-
