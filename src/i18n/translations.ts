@@ -6,6 +6,7 @@ export const translations = {
     wasteTracking: "تتبع النفايات",
     reportIssues: "الإبلاغ عن المشكلات",
     collectionPoints: "نقاط الجمع",
+    rewards: "المكافآت",
     
     // العنوان الرئيسي
     siteTitle: "Clean DZ",
@@ -522,6 +523,14 @@ export const translations = {
     noRecordsYet: "Aucun enregistrement pour l'instant",
     startAddingWaste: "Commencez à ajouter vos enregistrements de déchets",
     type: "Type",
+    
+    // Waste types
+    plastic: "Plastique",
+    paper: "Papier",
+    glass: "Verre",
+    metal: "Métal",
+    food: "Alimentaire",
+    otherWaste: "Autre",
     
     // Bottom navigation
     statistics: "Statistiques",
