@@ -107,7 +107,39 @@ export const translations = {
     paper: "ورق",
     glass: "زجاج",
     metal: "معدن",
-    food: "طعام"
+    food: "طعام",
+    other: "أخرى",
+    
+    // Bottom navigation
+    statistics: "الإحصائيات",
+    settings: "الإعدادات",
+    map: "الخريطة",
+    
+    // Admin panel
+    adminPanel: "لوحة الإدارة",
+    adminOnly: "محتوى خاص بالمسؤولين",
+    totalUsers: "إجمالي المستخدمين",
+    totalReports: "إجمالي البلاغات",
+    totalWasteCollected: "إجمالي النفايات المجمعة",
+    manageUsers: "إدارة المستخدمين",
+    manageReports: "إدارة البلاغات",
+    analytics: "التحليلات",
+    
+    // Stats and home page
+    quickStats: "إحصائيات سريعة",
+    collectedWaste: "النفايات المجمعة",
+    ton: "طن",
+    recycledMaterials: "المواد المعاد تدويرها",
+    resolvedReports: "البلاغات المحلولة",
+    ourServices: "خدماتنا",
+    wasteTrackingDesc: "تتبع وإدارة النفايات المنزلية",
+    details: "تفاصيل",
+    reportIssuesDesc: "الإبلاغ عن مشكلات النفايات",
+    collectionPointsDesc: "العثور على نقاط جمع النفايات",
+    rewardsDesc: "كسب نقاط مقابل إعادة التدوير",
+    joinUsToday: "انضم إلينا اليوم",
+    joinUsDescription: "ساعد في جعل بيئتنا أكثر نظافة واستدامة",
+    startNow: "ابدأ الآن"
   },
   
   en: {
@@ -213,12 +245,44 @@ export const translations = {
     startAddingWaste: "Start adding your waste records",
     type: "Type",
     
+    // Bottom navigation
+    statistics: "Statistics",
+    settings: "Settings",
+    map: "Map",
+    
+    // Admin panel
+    adminPanel: "Admin Panel",
+    adminOnly: "Admin Only Content",
+    totalUsers: "Total Users",
+    totalReports: "Total Reports",
+    totalWasteCollected: "Total Waste Collected",
+    manageUsers: "Manage Users",
+    manageReports: "Manage Reports",
+    analytics: "Analytics",
+    
     // Waste types
     plastic: "Plastic",
     paper: "Paper",
     glass: "Glass",
     metal: "Metal",
-    food: "Food"
+    food: "Food",
+    other: "Other",
+    
+    // Stats and home page
+    quickStats: "Quick Stats",
+    collectedWaste: "Collected Waste",
+    ton: "ton",
+    recycledMaterials: "Recycled Materials",
+    resolvedReports: "Resolved Reports",
+    ourServices: "Our Services",
+    wasteTrackingDesc: "Track and manage your household waste",
+    details: "Details",
+    reportIssuesDesc: "Report waste-related issues",
+    collectionPointsDesc: "Find waste collection points",
+    rewardsDesc: "Earn points for recycling",
+    joinUsToday: "Join Us Today",
+    joinUsDescription: "Help make our environment cleaner and more sustainable",
+    startNow: "Start Now"
   },
   
   fr: {
@@ -324,12 +388,44 @@ export const translations = {
     startAddingWaste: "Commencez à ajouter vos enregistrements de déchets",
     type: "Type",
     
+    // Bottom navigation
+    statistics: "Statistiques",
+    settings: "Paramètres",
+    map: "Carte",
+    
+    // Admin panel
+    adminPanel: "Panneau d'Administration",
+    adminOnly: "Contenu Réservé aux Administrateurs",
+    totalUsers: "Total des Utilisateurs",
+    totalReports: "Total des Signalements",
+    totalWasteCollected: "Total des Déchets Collectés",
+    manageUsers: "Gérer les Utilisateurs",
+    manageReports: "Gérer les Signalements",
+    analytics: "Analyses",
+    
     // Types de déchets
     plastic: "Plastique",
     paper: "Papier",
     glass: "Verre",
     metal: "Métal",
-    food: "Nourriture"
+    food: "Nourriture",
+    other: "Autre",
+    
+    // Stats and home page
+    quickStats: "Statistiques Rapides",
+    collectedWaste: "Déchets Collectés",
+    ton: "tonne",
+    recycledMaterials: "Matériaux Recyclés",
+    resolvedReports: "Signalements Résolus",
+    ourServices: "Nos Services",
+    wasteTrackingDesc: "Suivre et gérer vos déchets ménagers",
+    details: "Détails",
+    reportIssuesDesc: "Signaler des problèmes liés aux déchets",
+    collectionPointsDesc: "Trouver des points de collecte des déchets",
+    rewardsDesc: "Gagnez des points pour le recyclage",
+    joinUsToday: "Rejoignez-nous Aujourd'hui",
+    joinUsDescription: "Aidez à rendre notre environnement plus propre et plus durable",
+    startNow: "Commencer Maintenant"
   }
 };
 

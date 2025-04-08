@@ -39,9 +39,15 @@ export interface AlgerianRegion {
   name_fr: string;
 }
 
+export interface AdminUser {
+  id: string;
+  role: 'admin' | 'user';
+}
+
 export type Tables = {
   profiles: Profile;
   issue_reports: IssueReport;
   waste_entries: WasteEntry;
   algerian_regions: AlgerianRegion;
+  admin_users: AdminUser;
 };
