@@ -28,7 +28,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       // Check if user has admin role in admin_users table
       const { data, error } = await supabase
         .from('admin_users')
-        .select('*')
+        .select('role')
         .eq('id', user.id)
         .single();
 

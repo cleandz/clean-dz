@@ -51,7 +51,7 @@ const AdminDashboard = () => {
       }
       
       const totalWeight = wasteData 
-        ? wasteData.reduce((acc, entry) => acc + (parseFloat(String(entry.weight)) || 0), 0)
+        ? wasteData.reduce((acc, entry) => acc + (parseFloat(entry.weight) || 0), 0)
         : 0;
       
       setStats({
