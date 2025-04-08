@@ -1,4 +1,3 @@
-
 export const translations = {
   ar: {
     // الصفحة الرئيسية
@@ -66,6 +65,7 @@ export const translations = {
     damagedContainers: "حاويات تالفة",
     noCollection: "عدم جمع النفايات",
     wasteLeakage: "تسرب نفايات",
+    other: "أخرى",
     selectProblemType: "اختر نوع المشكلة",
     enterLocation: "أدخل الموقع",
     enterDescription: "أدخل وصفاً مفصلاً للمشكلة",
@@ -87,7 +87,7 @@ export const translations = {
     wasteType: "نوع النفايات",
     weight: "الوزن",
     kg: "كغ",
-    recyclable: "قابل للتدوير",
+    recyclable: "قابل ��لتدوير",
     action: "إجراء",
     addRecord: "إضافة سجل",
     wasteRecords: "سجلات النفايات",
@@ -108,7 +108,7 @@ export const translations = {
     glass: "زجاج",
     metal: "معدن",
     food: "طعام",
-    otherWaste: "أخرى",
+    other: "أخرى",
     
     // Bottom navigation
     statistics: "الإحصائيات",
@@ -208,6 +208,7 @@ export const translations = {
     damagedContainers: "Damaged Containers",
     noCollection: "No Waste Collection",
     wasteLeakage: "Waste Leakage",
+    other: "Other",
     selectProblemType: "Select problem type",
     enterLocation: "Enter location",
     enterDescription: "Enter a detailed description of the issue",
@@ -265,7 +266,7 @@ export const translations = {
     glass: "Glass",
     metal: "Metal",
     food: "Food",
-    otherWaste: "Other",
+    other: "Other",
     
     // Stats and home page
     quickStats: "Quick Stats",
@@ -350,6 +351,7 @@ export const translations = {
     damagedContainers: "Conteneurs Endommagés",
     noCollection: "Pas de Collecte de Déchets",
     wasteLeakage: "Fuite de Déchets",
+    other: "Autre",
     selectProblemType: "Sélectionner le type de problème",
     enterLocation: "Entrer l'emplacement",
     enterDescription: "Entrer une description détaillée du problème",
@@ -407,7 +409,7 @@ export const translations = {
     glass: "Verre",
     metal: "Métal",
     food: "Nourriture",
-    otherWaste: "Autre",
+    other: "Autre",
     
     // Stats and home page
     quickStats: "Statistiques Rapides",
