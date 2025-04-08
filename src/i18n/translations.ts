@@ -141,27 +141,23 @@ export const translations = {
     joinUsDescription: "ساعد في جعل بيئتنا أكثر نظافة واستدامة",
     startNow: "ابدأ الآن",
     
-    // Error
+    // Nested sections
     error: {
       title: "خطأ"
     },
     
-    // Success
     success: {
       title: "تم بنجاح"
     },
     
-    // Auth
     auth: {
       loginRequired: "يجب تسجيل الدخول أولاً"
     },
     
-    // Common
     common: {
       loading: "جاري التحميل..."
     },
     
-    // Navigation
     navigation: {
       rewards: "المكافآت"
     },
@@ -352,27 +348,23 @@ export const translations = {
     joinUsDescription: "Help make our environment cleaner and more sustainable",
     startNow: "Start Now",
     
-    // Error
+    // Nested sections
     error: {
       title: "Error"
     },
     
-    // Success
     success: {
       title: "Success"
     },
     
-    // Auth
     auth: {
       loginRequired: "You need to login first"
     },
     
-    // Common
     common: {
       loading: "Loading..."
     },
     
-    // Navigation
     navigation: {
       rewards: "Rewards"
     },
@@ -563,27 +555,23 @@ export const translations = {
     joinUsDescription: "Aidez à rendre notre environnement plus propre et plus durable",
     startNow: "Commencer Maintenant",
     
-    // Error
+    // Nested sections
     error: {
       title: "Erreur"
     },
     
-    // Success
     success: {
       title: "Succès"
     },
     
-    // Auth
     auth: {
       loginRequired: "Vous devez vous connecter d'abord"
     },
     
-    // Common
     common: {
       loading: "Chargement..."
     },
     
-    // Navigation
     navigation: {
       rewards: "Récompenses"
     },
@@ -641,8 +629,8 @@ export type TranslationKey =
   | `success.${keyof typeof translations.en.success}`
   | `auth.${keyof typeof translations.en.auth}`
   | `common.${keyof typeof translations.en.common}`
-  | `rewards.${keyof typeof translations.en.rewards}`
-  | `navigation.${keyof typeof translations.en.navigation}`;
+  | `navigation.${keyof typeof translations.en.navigation}`
+  | `rewards.${keyof typeof translations.en.rewards}`;
 
 // هوك لاستخدام الترجمات
 export const useTranslation = (language: 'ar' | 'en' | 'fr') => {
