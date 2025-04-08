@@ -1,112 +1,248 @@
 
-import React, { useState } from 'react';
-import { Gift, Star, Archive, Award, ChevronRight, Medal, Leaf, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Gift, Star, Archive, Award, ChevronRight, Medal, Leaf, TrendingUp, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from '@/i18n/translations';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
 interface Reward {
   id: string;
-  name: string;
-  description: string;
+  name: {
+    ar: string;
+    en: string;
+    fr: string;
+  };
+  description: {
+    ar: string;
+    en: string;
+    fr: string;
+  };
+  points_required: number;
+  reward_type: string;
+  image_url: string | null;
+}
+
+interface UserPoints {
+  total_points: number;
+  recycling_points: number;
+  reporting_points: number;
+  interaction_points: number;
+}
+
+interface PointTransaction {
+  date: string;
+  action: string;
   points: number;
-  image: string;
 }
 
 const Rewards = () => {
   const { toast } = useToast();
-  const [userPoints, setUserPoints] = useState(450);
-  const [history, setHistory] = useState([
-    { date: '2025-04-01', action: 'تسجيل 5 كغ من البلاستيك القابل للتدوير', points: 50 },
-    { date: '2025-03-28', action: 'الإبلاغ عن نقطة سوداء', points: 20 },
-    { date: '2025-03-25', action: 'إكمال تحدي "أسبوع بلا نفايات"', points: 100 },
-  ]);
+  const { language, dir } = useLanguage();
+  const { t } = useTranslation(language);
+  const { user } = useAuth();
 
-  const availableRewards: Reward[] = [
-    {
-      id: '1',
-      name: 'قسيمة خصم 10%',
-      description: 'خصم 10% على منتجات الشركة الخضراء الصديقة للبيئة',
-      points: 200,
-      image: 'coupon',
-    },
-    {
-      id: '2',
-      name: 'شجرة مجانية',
-      description: 'احصل على شجرة مجانية للزراعة في منطقتك',
-      points: 350,
-      image: 'tree',
-    },
-    {
-      id: '3',
-      name: 'دورة تدريبية',
-      description: 'دورة تدريبية عن إعادة التدوير وتقليل النفايات',
-      points: 500,
-      image: 'course',
-    },
-    {
-      id: '4',
-      name: 'حاويات فرز النفايات',
-      description: 'مجموعة من حاويات فرز النفايات للاستخدام المنزلي',
-      points: 600,
-      image: 'bins',
-    },
-  ];
+  const [isLoading, setIsLoading] = useState(true);
+  const [userPoints, setUserPoints] = useState<UserPoints>({
+    total_points: 0,
+    recycling_points: 0,
+    reporting_points: 0,
+    interaction_points: 0
+  });
+  const [availableRewards, setAvailableRewards] = useState<Reward[]>([]);
+  const [pointHistory, setPointHistory] = useState<PointTransaction[]>([]);
+  const [isRedeeming, setIsRedeeming] = useState(false);
 
-  const redeemReward = (reward: Reward) => {
-    if (userPoints >= reward.points) {
-      setUserPoints(userPoints - reward.points);
-      
-      const newHistoryItem = {
-        date: new Date().toISOString().split('T')[0],
-        action: `استبدال مكافأة: ${reward.name}`,
-        points: -reward.points,
-      };
-      
-      setHistory([newHistoryItem, ...history]);
-      
-      toast({
-        title: "تمت العملية بنجاح",
-        description: `تم استبدال ${reward.points} نقطة للحصول على ${reward.name}`,
-      });
+  // Fetch user points and rewards on component mount
+  useEffect(() => {
+    if (user) {
+      fetchUserData();
     } else {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      // Fetch user points
+      const { data: pointsData, error: pointsError } = await supabase
+        .from('user_points')
+        .select('*')
+        .eq('user_id', user?.id)
+        .single();
+
+      if (pointsError && pointsError.code !== 'PGRST116') {
+        // PGRST116 is "no rows returned" which is fine for new users
+        throw pointsError;
+      }
+
+      // Fetch available rewards
+      const { data: rewardsData, error: rewardsError } = await supabase
+        .from('rewards')
+        .select('*')
+        .eq('active', true);
+
+      if (rewardsError) throw rewardsError;
+
+      // Fetch point transactions for history
+      const { data: transactionsData, error: transactionsError } = await supabase
+        .from('point_transactions')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false });
+
+      if (transactionsError) throw transactionsError;
+
+      // Update states with fetched data
+      if (pointsData) {
+        setUserPoints(pointsData);
+      }
+
+      if (rewardsData) {
+        setAvailableRewards(rewardsData);
+      }
+
+      if (transactionsData) {
+        const history = transactionsData.map(transaction => {
+          let action = '';
+          
+          // Convert transaction type to readable action
+          switch(transaction.transaction_type) {
+            case 'recycling':
+              action = t('recyclingPoints');
+              break;
+            case 'reporting':
+              action = t('reportingPoints');
+              break;
+            case 'interaction':
+              action = t('interactionPoints');
+              break;
+            case 'redemption':
+              action = t('pointsRedeemed');
+              break;
+            default:
+              action = transaction.transaction_type;
+          }
+          
+          return {
+            date: new Date(transaction.created_at).toISOString().split('T')[0],
+            action,
+            points: transaction.points
+          };
+        });
+        
+        setPointHistory(history);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
       toast({
-        title: "نقاط غير كافية",
-        description: `تحتاج ${reward.points - userPoints} نقطة إضافية للحصول على هذه المكافأة`,
+        title: t('errorTitle'),
+        description: t('errorFetchingData'),
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const renderRewardIcon = (image: string) => {
-    switch(image) {
+  const redeemReward = async (reward: Reward) => {
+    if (!user) {
+      toast({
+        title: t('errorTitle'),
+        description: t('loginRequired'),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (userPoints.total_points < reward.points_required) {
+      toast({
+        title: t('notEnoughPoints'),
+        description: `${t('youNeed')} ${reward.points_required - userPoints.total_points} ${t('morePoints')}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsRedeeming(true);
+
+    try {
+      // Insert the redemption record - the trigger will handle updating points
+      const { data, error } = await supabase
+        .from('user_rewards')
+        .insert({
+          user_id: user.id,
+          reward_id: reward.id
+        })
+        .select();
+
+      if (error) throw error;
+
+      // Update local state to reflect change
+      setUserPoints(prevPoints => ({
+        ...prevPoints,
+        total_points: prevPoints.total_points - reward.points_required
+      }));
+
+      // Add to history
+      const newHistoryItem = {
+        date: new Date().toISOString().split('T')[0],
+        action: t('rewardRedeemed') + ': ' + reward.name[language as keyof typeof reward.name],
+        points: -reward.points_required
+      };
+      
+      setPointHistory([newHistoryItem, ...pointHistory]);
+
+      toast({
+        title: t('successTitle'),
+        description: `${t('rewardRedeemedMessage')} ${reward.name[language as keyof typeof reward.name]}`,
+      });
+
+      // Refresh data to ensure everything is in sync
+      fetchUserData();
+    } catch (error) {
+      console.error('Error redeeming reward:', error);
+      toast({
+        title: t('errorTitle'),
+        description: t('errorRedeemingReward'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsRedeeming(false);
+    }
+  };
+
+  const renderRewardIcon = (type: string) => {
+    switch(type) {
       case 'coupon':
         return <Gift className="h-8 w-8 text-amber-500" />;
-      case 'tree':
+      case 'item':
         return <Leaf className="h-8 w-8 text-primary-green" />;
-      case 'course':
+      case 'event':
         return <Archive className="h-8 w-8 text-secondary-blue" />;
-      case 'bins':
-        return <Archive className="h-8 w-8 text-purple-500" />;
       default:
         return <Award className="h-8 w-8 text-primary-green" />;
     }
   };
 
   const levels = [
-    { name: 'مبتدئ', threshold: 0, icon: <Leaf className="h-5 w-5" /> },
-    { name: 'نشط', threshold: 300, icon: <Star className="h-5 w-5" /> },
-    { name: 'متقدم', threshold: 800, icon: <Medal className="h-5 w-5" /> },
-    { name: 'خبير', threshold: 1500, icon: <Award className="h-5 w-5" /> },
+    { name: t('beginner'), threshold: 0, icon: <Leaf className="h-5 w-5" /> },
+    { name: t('active'), threshold: 300, icon: <Star className="h-5 w-5" /> },
+    { name: t('advanced'), threshold: 800, icon: <Medal className="h-5 w-5" /> },
+    { name: t('expert'), threshold: 1500, icon: <Award className="h-5 w-5" /> },
   ];
 
   const getCurrentLevel = () => {
     for (let i = levels.length - 1; i >= 0; i--) {
-      if (userPoints >= levels[i].threshold) {
+      if (userPoints.total_points >= levels[i].threshold) {
         return i;
       }
     }
@@ -120,26 +256,35 @@ const Rewards = () => {
   const getProgressToNextLevel = () => {
     if (!nextLevel) return 100;
     const pointsForNextLevel = nextLevel.threshold - currentLevel.threshold;
-    const userProgressPoints = userPoints - currentLevel.threshold;
+    const userProgressPoints = userPoints.total_points - currentLevel.threshold;
     return Math.min(100, Math.floor((userProgressPoints / pointsForNextLevel) * 100));
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-primary-green" />
+        <p className="mt-4 text-gray-600">{t('loading')}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col rtl">
+    <div className={`min-h-screen flex flex-col ${dir === 'rtl' ? 'rtl' : 'ltr'}`}>
       <Navbar />
       
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-6">المكافآت</h1>
+          <h1 className="text-3xl font-bold mb-6">{t('rewards')}</h1>
           
-          {/* بطاقة النقاط والمستوى */}
+          {/* Points and Level Card */}
           <Card className="mb-8 bg-gradient-to-r from-primary-green to-secondary-blue text-white">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                 <div className="mb-6 md:mb-0">
-                  <p className="text-white/80 mb-1">رصيدك الحالي</p>
+                  <p className="text-white/80 mb-1">{t('currentBalance')}</p>
                   <h2 className="text-4xl font-bold flex items-center">
-                    {userPoints} <Star className="ml-2 h-5 w-5 text-yellow-300" />
+                    {userPoints.total_points} <Star className={`${dir === 'rtl' ? 'mr-2' : 'ml-2'} h-5 w-5 text-yellow-300`} />
                   </h2>
                 </div>
                 
@@ -149,11 +294,11 @@ const Rewards = () => {
                 
                 <div>
                   <div className="flex items-center mb-2">
-                    <div className="p-2 bg-white/20 rounded-full mr-3">
+                    <div className={`p-2 bg-white/20 rounded-full ${dir === 'rtl' ? 'ml-3' : 'mr-3'}`}>
                       {currentLevel.icon}
                     </div>
                     <div>
-                      <p className="text-white/80 text-sm">مستواك الحالي</p>
+                      <p className="text-white/80 text-sm">{t('currentLevel')}</p>
                       <h3 className="font-bold">{currentLevel.name}</h3>
                     </div>
                   </div>
@@ -162,7 +307,7 @@ const Rewards = () => {
                     <>
                       <Progress value={getProgressToNextLevel()} className="h-2 bg-white/20" />
                       <div className="flex justify-between text-xs mt-1">
-                        <span>{nextLevel.threshold - userPoints} نقطة للمستوى التالي</span>
+                        <span>{nextLevel.threshold - userPoints.total_points} {t('pointsToNextLevel')}</span>
                         <span>{nextLevel.name}</span>
                       </div>
                     </>
@@ -174,57 +319,76 @@ const Rewards = () => {
           
           <Tabs defaultValue="rewards">
             <TabsList className="grid grid-cols-3 mb-6">
-              <TabsTrigger value="rewards">المكافآت المتاحة</TabsTrigger>
-              <TabsTrigger value="history">سجل النقاط</TabsTrigger>
-              <TabsTrigger value="achievements">الإنجازات</TabsTrigger>
+              <TabsTrigger value="rewards">{t('availableRewards')}</TabsTrigger>
+              <TabsTrigger value="history">{t('pointsHistory')}</TabsTrigger>
+              <TabsTrigger value="achievements">{t('achievements')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="rewards">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {availableRewards.map((reward) => (
-                  <Card key={reward.id} className="overflow-hidden hover:shadow-md transition-shadow">
-                    <div className="bg-gray-100 p-6 flex justify-center">
-                      {renderRewardIcon(reward.image)}
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="font-bold mb-2">{reward.name}</h3>
-                      <p className="text-gray-600 text-sm mb-4">{reward.description}</p>
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center">
-                          <Star className="text-amber-500 h-5 w-5 ml-1" />
-                          <span className="font-bold">{reward.points}</span>
-                        </div>
-                        <Button 
-                          onClick={() => redeemReward(reward)}
-                          disabled={userPoints < reward.points}
-                          variant={userPoints >= reward.points ? "default" : "outline"}
-                        >
-                          استبدال
-                        </Button>
+              {availableRewards.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {availableRewards.map((reward) => (
+                    <Card key={reward.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                      <div className="bg-gray-100 p-6 flex justify-center">
+                        {renderRewardIcon(reward.reward_type)}
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                      <CardContent className="p-6">
+                        <h3 className="font-bold mb-2">
+                          {reward.name[language as keyof typeof reward.name]}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-4">
+                          {reward.description[language as keyof typeof reward.description]}
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            <Star className={`text-amber-500 h-5 w-5 ${dir === 'rtl' ? 'ml-1' : 'mr-1'}`} />
+                            <span className="font-bold">{reward.points_required}</span>
+                          </div>
+                          <Button 
+                            onClick={() => redeemReward(reward)}
+                            disabled={userPoints.total_points < reward.points_required || isRedeeming}
+                            variant={userPoints.total_points >= reward.points_required ? "default" : "outline"}
+                          >
+                            {isRedeeming ? <Loader2 className={`h-4 w-4 animate-spin ${dir === 'rtl' ? 'ml-2' : 'mr-2'}`} /> : null}
+                            {t('redeem')}
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Award className="h-16 w-16 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium">{t('noRewardsAvailable')}</h3>
+                  <p className="text-gray-500 mt-2">{t('checkBackLater')}</p>
+                </div>
+              )}
             </TabsContent>
             
             <TabsContent value="history">
               <Card>
                 <CardHeader>
-                  <CardTitle>سجل النقاط</CardTitle>
+                  <CardTitle>{t('pointsHistory')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {history.map((item, index) => (
-                    <div key={index} className={`flex justify-between items-center py-3 ${index !== history.length - 1 ? 'border-b' : ''}`}>
-                      <div>
-                        <p className="font-medium">{item.action}</p>
-                        <p className="text-sm text-gray-500">{item.date}</p>
+                  {pointHistory.length > 0 ? (
+                    pointHistory.map((item, index) => (
+                      <div key={index} className={`flex justify-between items-center py-3 ${index !== pointHistory.length - 1 ? 'border-b' : ''}`}>
+                        <div>
+                          <p className="font-medium">{item.action}</p>
+                          <p className="text-sm text-gray-500">{item.date}</p>
+                        </div>
+                        <div className={`font-bold ${item.points > 0 ? 'text-primary-green' : 'text-red-500'}`}>
+                          {item.points > 0 ? '+' : ''}{item.points}
+                        </div>
                       </div>
-                      <div className={`font-bold ${item.points > 0 ? 'text-primary-green' : 'text-red-500'}`}>
-                        {item.points > 0 ? '+' : ''}{item.points}
-                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <p>{t('noPointHistory')}</p>
                     </div>
-                  ))}
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -233,35 +397,53 @@ const Rewards = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>إنجازاتك</CardTitle>
+                    <CardTitle>{t('yourAchievements')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="flex items-center gap-4 p-3 bg-primary-green/10 rounded-lg">
+                      <div className={`flex items-center gap-4 p-3 bg-primary-green/10 rounded-lg ${userPoints.recycling_points >= 50 ? '' : 'opacity-50'}`}>
                         <Medal className="h-10 w-10 text-primary-green" />
                         <div>
-                          <h4 className="font-medium">جامع النفايات</h4>
-                          <p className="text-sm text-gray-600">جمع 50 كغ من النفايات القابلة للتدوير</p>
+                          <h4 className="font-medium">{t('wasteCollector')}</h4>
+                          <p className="text-sm text-gray-600">{t('wasteCollectorDesc')}</p>
+                          <Progress 
+                            value={Math.min(100, (userPoints.recycling_points / 50) * 100)} 
+                            className="h-2 mt-1" 
+                          />
+                          <p className="text-xs text-gray-500 mt-1">
+                            {Math.min(userPoints.recycling_points, 50)}/50 {t('points')}
+                          </p>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-gray-400 ml-auto" />
                       </div>
                       
-                      <div className="flex items-center gap-4 p-3 bg-secondary-blue/10 rounded-lg">
+                      <div className={`flex items-center gap-4 p-3 bg-secondary-blue/10 rounded-lg ${userPoints.reporting_points >= 100 ? '' : 'opacity-50'}`}>
                         <TrendingUp className="h-10 w-10 text-secondary-blue" />
                         <div>
-                          <h4 className="font-medium">مراقب البيئة</h4>
-                          <p className="text-sm text-gray-600">الإبلاغ عن 5 نقاط سوداء</p>
+                          <h4 className="font-medium">{t('environmentMonitor')}</h4>
+                          <p className="text-sm text-gray-600">{t('environmentMonitorDesc')}</p>
+                          <Progress 
+                            value={Math.min(100, (userPoints.reporting_points / 100) * 100)} 
+                            className="h-2 mt-1" 
+                          />
+                          <p className="text-xs text-gray-500 mt-1">
+                            {Math.min(userPoints.reporting_points, 100)}/100 {t('points')}
+                          </p>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-gray-400 ml-auto" />
                       </div>
                       
-                      <div className="flex items-center gap-4 p-3 bg-amber-500/10 rounded-lg">
+                      <div className={`flex items-center gap-4 p-3 bg-amber-500/10 rounded-lg ${userPoints.total_points >= 500 ? '' : 'opacity-50'}`}>
                         <Leaf className="h-10 w-10 text-amber-500" />
                         <div>
-                          <h4 className="font-medium">صديق البيئة</h4>
-                          <p className="text-sm text-gray-600">المساهمة في تنظيف 3 مناطق</p>
+                          <h4 className="font-medium">{t('ecoFriend')}</h4>
+                          <p className="text-sm text-gray-600">{t('ecoFriendDesc')}</p>
+                          <Progress 
+                            value={Math.min(100, (userPoints.total_points / 500) * 100)} 
+                            className="h-2 mt-1" 
+                          />
+                          <p className="text-xs text-gray-500 mt-1">
+                            {Math.min(userPoints.total_points, 500)}/500 {t('points')}
+                          </p>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-gray-400 ml-auto" />
                       </div>
                     </div>
                   </CardContent>
@@ -269,36 +451,36 @@ const Rewards = () => {
                 
                 <Card>
                   <CardHeader>
-                    <CardTitle>التحديات النشطة</CardTitle>
+                    <CardTitle>{t('activeChallenges')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="border rounded-lg p-4">
                         <div className="flex justify-between items-start mb-3">
-                          <h4 className="font-medium">تحدي صفر نفايات</h4>
+                          <h4 className="font-medium">{t('zeroWasteChallenge')}</h4>
                           <div className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs rounded-full">
-                            +100 نقطة
+                            +100 {t('points')}
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600 mb-3">قلل من استهلاك البلاستيك ذو الاستخدام الواحد لمدة أسبوع</p>
+                        <p className="text-sm text-gray-600 mb-3">{t('zeroWasteChallengeDesc')}</p>
                         <Progress value={30} className="h-2" />
                         <div className="mt-2 text-xs text-gray-500 flex justify-between">
-                          <span>3/10 أيام</span>
+                          <span>3/10 {t('days')}</span>
                           <span>30%</span>
                         </div>
                       </div>
                       
                       <div className="border rounded-lg p-4">
                         <div className="flex justify-between items-start mb-3">
-                          <h4 className="font-medium">معلم البيئة</h4>
+                          <h4 className="font-medium">{t('ecoEducator')}</h4>
                           <div className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs rounded-full">
-                            +50 نقطة
+                            +50 {t('points')}
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600 mb-3">نشر الوعي البيئي من خلال مشاركة 5 موضوعات توعوية</p>
+                        <p className="text-sm text-gray-600 mb-3">{t('ecoEducatorDesc')}</p>
                         <Progress value={60} className="h-2" />
                         <div className="mt-2 text-xs text-gray-500 flex justify-between">
-                          <span>3/5 مشاركات</span>
+                          <span>3/5 {t('shares')}</span>
                           <span>60%</span>
                         </div>
                       </div>
