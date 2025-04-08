@@ -15,6 +15,7 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
+  MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { useLanguage, SupportedLanguage } from '@/contexts/LanguageContext';
@@ -66,56 +67,56 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="text-white text-xl font-bold">{t('siteTitle')}</Link>
-          </div>
-          
-          {/* Desktop Menubar - centered */}
-          <div className="hidden md:flex justify-center flex-1">
-            <Menubar className="bg-transparent border-none">
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('home')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/">{t('home')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('wasteTracking')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/waste-tracking">{t('wasteTracking')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('reportIssues')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/report-issues">{t('reportIssues')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('collectionPoints')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/collection-points">{t('collectionPoints')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('rewards')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/rewards">{t('rewards')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+            
+            {/* Desktop Menubar */}
+            <div className="hidden md:block ml-6">
+              <Menubar className="bg-transparent border-none">
+                <MenubarMenu>
+                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('home')}</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem asChild>
+                      <Link to="/">{t('home')}</Link>
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+                
+                <MenubarMenu>
+                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('wasteTracking')}</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem asChild>
+                      <Link to="/waste-tracking">{t('wasteTracking')}</Link>
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+                
+                <MenubarMenu>
+                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('reportIssues')}</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem asChild>
+                      <Link to="/report-issues">{t('reportIssues')}</Link>
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+                
+                <MenubarMenu>
+                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('collectionPoints')}</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem asChild>
+                      <Link to="/collection-points">{t('collectionPoints')}</Link>
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+                
+                <MenubarMenu>
+                  <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('rewards')}</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem asChild>
+                      <Link to="/rewards">{t('rewards')}</Link>
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+              </Menubar>
+            </div>
           </div>
           
           <div className="hidden md:flex items-center space-x-4">
@@ -127,7 +128,7 @@ const Navbar = () => {
                     <User className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
+                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'}>
                   <DropdownMenuItem asChild>
                     <Link to="/profile">{authT.profile}</Link>
                   </DropdownMenuItem>
@@ -153,7 +154,7 @@ const Navbar = () => {
                   <Globe className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
+              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'}>
                 <DropdownMenuItem onClick={() => handleLanguageChange('ar')}>
                   {t('arabic')}
                 </DropdownMenuItem>
@@ -176,7 +177,7 @@ const Navbar = () => {
                     <User className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
+                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'}>
                   <DropdownMenuItem asChild>
                     <Link to="/profile">{authT.profile}</Link>
                   </DropdownMenuItem>
@@ -195,7 +196,7 @@ const Navbar = () => {
                   <Globe className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
+              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'}>
                 <DropdownMenuItem onClick={() => handleLanguageChange('ar')}>
                   {t('arabic')}
                 </DropdownMenuItem>
