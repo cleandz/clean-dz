@@ -1,5 +1,6 @@
 
-import { useToast } from "@/hooks/use-toast"
+// This file should import from the UI wrapper, not directly from hooks
+import { useToast } from "@/components/ui/use-toast"
 import {
   Toast,
   ToastClose,
