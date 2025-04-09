@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/contexts/AuthContext';
@@ -46,7 +46,6 @@ const ReportIssues = () => {
     imageFile: null as File | null,
   });
 
-  // Check if user is logged in
   useEffect(() => {
     if (!user) {
       toast({
@@ -60,7 +59,6 @@ const ReportIssues = () => {
     }
   }, [user, navigate, language]);
 
-  // Fetch user's reports
   const fetchReports = async () => {
     if (!user) return;
     
@@ -119,7 +117,6 @@ const ReportIssues = () => {
         
       if (uploadError) throw uploadError;
       
-      // Get the public URL
       const { data: publicUrlData } = supabase.storage
         .from('issue_reports')
         .getPublicUrl(filePath);
@@ -175,7 +172,6 @@ const ReportIssues = () => {
       if (newReport.imageFile) {
         imageUrl = await uploadImage(newReport.imageFile);
         if (!imageUrl && newReport.imageFile) {
-          // If image upload failed but was provided, stop submission
           setIsSubmitting(false);
           return;
         }
@@ -187,14 +183,15 @@ const ReportIssues = () => {
         location: newReport.location,
         description: newReport.description,
         image_url: imageUrl,
-        status: 'pending'
+        status: 'pending',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       };
-      
-      console.log('Submitting report with data:', reportData);
       
       const { error, data } = await supabase
         .from('issue_reports')
-        .insert(reportData);
+        .insert(reportData)
+        .select();
       
       if (error) {
         console.error('Submission error:', error);
@@ -216,7 +213,6 @@ const ReportIssues = () => {
         description: t('successDescription'),
       });
       
-      // Refresh the reports list
       fetchReports();
       
     } catch (error: any) {
