@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Camera, MapPin, Send, AlertTriangle, Loader2, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/contexts/AuthContext';
@@ -113,17 +114,18 @@ const ReportIssues = () => {
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `${user?.id}/${fileName}`;
       
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError, data } = await supabase.storage
         .from('issue_reports')
         .upload(filePath, file);
         
       if (uploadError) throw uploadError;
       
-      const { data } = supabase.storage
+      // Get the public URL
+      const { data: publicUrlData } = supabase.storage
         .from('issue_reports')
         .getPublicUrl(filePath);
         
-      return data.publicUrl;
+      return publicUrlData.publicUrl;
     } catch (error) {
       console.error('Error uploading image:', error);
       toast({
@@ -173,12 +175,14 @@ const ReportIssues = () => {
       
       if (newReport.imageFile) {
         imageUrl = await uploadImage(newReport.imageFile);
-        if (!imageUrl) {
+        if (!imageUrl && newReport.imageFile) {
+          // If image upload failed but was provided, stop submission
           setIsSubmitting(false);
           return;
         }
       }
       
+      // Fix: Remove the ON CONFLICT clause by using a basic insert
       const { error } = await supabase
         .from('issue_reports')
         .insert({
@@ -188,9 +192,12 @@ const ReportIssues = () => {
           description: newReport.description,
           image_url: imageUrl,
           status: 'pending'
-        } as any);
+        });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Submission error:', error);
+        throw error;
+      }
       
       setNewReport({
         type: '',
@@ -207,11 +214,11 @@ const ReportIssues = () => {
       
       fetchReports();
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting report:', error);
       toast({
         title: t('errorTitle'),
-        description: t('errorSubmit'),
+        description: error.message || t('errorSubmit'),
         variant: "destructive",
       });
     } finally {
@@ -500,6 +507,71 @@ const ReportIssues = () => {
       <Footer />
     </div>
   );
+  
+  function getStatusBadgeColor(status: string) {
+    switch (status) {
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'inProgress':
+        return 'bg-blue-100 text-blue-800';
+      case 'resolved':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  }
+
+  function getStatusText(status: string) {
+    switch (status) {
+      case 'pending':
+        return t('pending');
+      case 'inProgress':
+        return t('inProgress');
+      case 'resolved':
+        return t('resolved');
+      default:
+        return status;
+    }
+  }
+
+  function getTypeTranslation(type: string) {
+    switch (type) {
+      case 'نقطة سوداء':
+      case 'Black Spot':
+      case 'Point Noir':
+        return language === 'ar' ? 'نقطة سوداء' : (language === 'en' ? 'Black Spot' : 'Point Noir');
+      case 'حاويات تالفة':
+      case 'Damaged Containers':
+      case 'Conteneurs Endommagés':
+        return language === 'ar' ? 'حاويات تالفة' : (language === 'en' ? 'Damaged Containers' : 'Conteneurs Endommagés');
+      case 'عدم جمع النفايات':
+      case 'No Waste Collection':
+      case 'Pas de Collecte de Déchets':
+        return language === 'ar' ? 'عدم جمع النفايات' : (language === 'en' ? 'No Waste Collection' : 'Pas de Collecte de Déchets');
+      case 'تسرب نفايات':
+      case 'Waste Leakage':
+      case 'Fuite de Déchets':
+        return language === 'ar' ? 'تسرب نفايات' : (language === 'en' ? 'Waste Leakage' : 'Fuite de Déchets');
+      case 'أخرى':
+      case 'Other':
+      case 'Autre':
+        return language === 'ar' ? 'أخرى' : (language === 'en' ? 'Other' : 'Autre');
+      default:
+        return type;
+    }
+  }
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    switch (language) {
+      case 'ar':
+        return date.toLocaleDateString('ar-SA');
+      case 'fr':
+        return date.toLocaleDateString('fr-FR');
+      default:
+        return date.toLocaleDateString('en-US');
+    }
+  }
 };
 
 export default ReportIssues;
