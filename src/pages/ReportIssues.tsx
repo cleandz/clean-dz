@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Camera, MapPin, Send, AlertTriangle, Loader2, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -182,22 +181,27 @@ const ReportIssues = () => {
         }
       }
       
-      // Fix: Remove the ON CONFLICT clause by using a basic insert
-      const { error } = await supabase
+      const reportData = {
+        user_id: user.id,
+        type: newReport.type,
+        location: newReport.location,
+        description: newReport.description,
+        image_url: imageUrl,
+        status: 'pending'
+      };
+      
+      console.log('Submitting report with data:', reportData);
+      
+      const { error, data } = await supabase
         .from('issue_reports')
-        .insert({
-          user_id: user.id,
-          type: newReport.type,
-          location: newReport.location,
-          description: newReport.description,
-          image_url: imageUrl,
-          status: 'pending'
-        });
+        .insert(reportData);
       
       if (error) {
         console.error('Submission error:', error);
         throw error;
       }
+      
+      console.log('Report submitted successfully:', data);
       
       setNewReport({
         type: '',
@@ -212,6 +216,7 @@ const ReportIssues = () => {
         description: t('successDescription'),
       });
       
+      // Refresh the reports list
       fetchReports();
       
     } catch (error: any) {
