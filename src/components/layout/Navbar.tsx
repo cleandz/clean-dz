@@ -10,13 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 import { useLanguage, SupportedLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/i18n/translations';
 import { useAuth } from '@/contexts/AuthContext';
@@ -68,57 +61,7 @@ const Navbar = () => {
             <Link to="/" className="text-white text-xl font-bold">{t('siteTitle')}</Link>
           </div>
           
-          {/* Desktop Menubar - centered */}
-          <div className="hidden md:flex justify-center flex-1">
-            <Menubar className="bg-transparent border-none">
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('home')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/">{t('home')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('wasteTracking')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/waste-tracking">{t('wasteTracking')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('reportIssues')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/report-issues">{t('reportIssues')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('collectionPoints')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/collection-points">{t('collectionPoints')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-              
-              <MenubarMenu>
-                <MenubarTrigger className="text-white hover:bg-primary-green-dark">{t('rewards')}</MenubarTrigger>
-                <MenubarContent className="bg-white">
-                  <MenubarItem asChild>
-                    <Link to="/rewards">{t('rewards')}</Link>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
             {/* User menu for authenticated users */}
             {user ? (
               <DropdownMenu>
@@ -127,7 +70,7 @@ const Navbar = () => {
                     <User className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
+                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white z-50">
                   <DropdownMenuItem asChild>
                     <Link to="/profile">{authT.profile}</Link>
                   </DropdownMenuItem>
@@ -153,49 +96,7 @@ const Navbar = () => {
                   <Globe className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
-                <DropdownMenuItem onClick={() => handleLanguageChange('ar')}>
-                  {t('arabic')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleLanguageChange('en')}>
-                  {t('english')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleLanguageChange('fr')}>
-                  {t('french')}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          
-          <div className="md:hidden flex items-center">
-            {/* Mobile User menu */}
-            {user && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-white mr-2">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile">{authT.profile}</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    {authT.logout}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-
-            {/* Mobile Language selector */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-white mr-2">
-                  <Globe className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white">
+              <DropdownMenuContent align={language === 'ar' ? 'end' : 'start'} className="bg-white z-50">
                 <DropdownMenuItem onClick={() => handleLanguageChange('ar')}>
                   {t('arabic')}
                 </DropdownMenuItem>
@@ -208,9 +109,12 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <Button variant="ghost" size="icon" className="text-white" onClick={toggleMenu}>
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <Button variant="ghost" size="icon" className="text-white" onClick={toggleMenu}>
+                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

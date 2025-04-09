@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 import { AdminUser } from '@/types/supabase';
+import { toast } from '@/components/ui/use-toast';
 
 interface AdminContextType {
   isAdmin: boolean;
@@ -35,6 +36,11 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error('Error checking admin status:', error);
+        toast({
+          title: "Error checking admin status",
+          description: "Please try again later",
+          variant: "destructive",
+        });
         setIsAdmin(false);
       } else {
         // Cast the data to AdminUser type to safely access the role property
@@ -43,6 +49,11 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error('Error checking admin status:', error);
+      toast({
+        title: "Error checking admin status",
+        description: "Please try again later",
+        variant: "destructive",
+      });
       setIsAdmin(false);
     } finally {
       setIsLoading(false);
