@@ -15,7 +15,7 @@ export const useStatistics = () => {
   const [statistics, setStatistics] = useState<Statistics>({
     collectedWaste: 0,
     recycledMaterials: 0,
-    collectionPoints: 120, // Default static value for collection points
+    collectionPoints: 0, // سيتم حسابها ديناميكياً
     resolvedReports: 0,
     isLoading: true,
   });
@@ -23,45 +23,52 @@ export const useStatistics = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        // Get total waste weight
+        // الحصول على إجمالي وزن النفايات
         const { data: wasteData, error: wasteError } = await supabase
           .from('waste_entries')
           .select('weight');
 
         if (wasteError) throw wasteError;
 
-        // Get recycled waste weight
-        const { data: recycledData, error: recycledError } = await supabase
-          .from('waste_entries')
-          .select('weight')
-          .eq('recyclable', true);
+        // حساب عدد نقاط الجمع
+        const { count: collectionPointsCount, error: collectionPointsError } = await supabase
+          .from('collection_points')
+          .select('*', { count: 'exact', head: true });
 
-        if (recycledError) throw recycledError;
+        if (collectionPointsError) throw collectionPointsError;
 
-        // Count resolved reports
+        // حساب عدد البلاغات المحلولة
         const { data: reportsData, error: reportsError } = await supabase
-          .from('issue_reports')
+          .from('reports')
           .select('id')
           .eq('status', 'resolved');
 
         if (reportsError) throw reportsError;
 
-        // Calculate totals
+        // حساب إجمالي النفايات التي تم التحقق منها
+        const { data: verifiedWasteData, error: verifiedWasteError } = await supabase
+          .from('waste_entries')
+          .select('weight')
+          .eq('verified', true);
+
+        if (verifiedWasteError) throw verifiedWasteError;
+
+        // حساب الإجماليات
         const totalWaste = wasteData.reduce((sum, entry) => sum + Number(entry.weight), 0);
-        const recycledWaste = recycledData.reduce((sum, entry) => sum + Number(entry.weight), 0);
+        const totalVerifiedWaste = verifiedWasteData.reduce((sum, entry) => sum + Number(entry.weight), 0);
 
         setStatistics({
-          collectedWaste: Math.round(totalWaste * 10) / 10, // Round to 1 decimal place
-          recycledMaterials: Math.round(recycledWaste * 10) / 10, // Round to 1 decimal place
-          collectionPoints: 120, // This is still static as we don't have a dynamic source
+          collectedWaste: Math.round(totalWaste * 10) / 10, // تقريب إلى 1 رقم عشري
+          recycledMaterials: Math.round(totalVerifiedWaste * 10) / 10, // تقريب إلى 1 رقم عشري
+          collectionPoints: collectionPointsCount || 0,
           resolvedReports: reportsData.length,
           isLoading: false,
         });
       } catch (error) {
         console.error('Error fetching statistics:', error);
         toast({
-          title: "Error loading statistics",
-          description: "Could not load the latest statistics",
+          title: "خطأ في تحميل الإحصائيات",
+          description: "تعذر تحميل أحدث الإحصائيات",
           variant: "destructive",
         });
         setStatistics(prev => ({ ...prev, isLoading: false }));

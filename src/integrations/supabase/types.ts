@@ -48,39 +48,42 @@ export type Database = {
         }
         Relationships: []
       }
-      issue_reports: {
+      collection_points: {
         Row: {
-          created_at: string
-          description: string
+          accepts: string[] | null
+          address: string
+          created_at: string | null
           id: string
-          image_url: string | null
-          location: string
-          status: string
-          type: string
-          updated_at: string
-          user_id: string | null
+          latitude: number
+          longitude: number
+          name: string
+          phone: string | null
+          updated_at: string | null
+          working_hours: string | null
         }
         Insert: {
-          created_at?: string
-          description: string
+          accepts?: string[] | null
+          address: string
+          created_at?: string | null
           id?: string
-          image_url?: string | null
-          location: string
-          status?: string
-          type: string
-          updated_at?: string
-          user_id?: string | null
+          latitude: number
+          longitude: number
+          name: string
+          phone?: string | null
+          updated_at?: string | null
+          working_hours?: string | null
         }
         Update: {
-          created_at?: string
-          description?: string
+          accepts?: string[] | null
+          address?: string
+          created_at?: string | null
           id?: string
-          image_url?: string | null
-          location?: string
-          status?: string
-          type?: string
-          updated_at?: string
-          user_id?: string | null
+          latitude?: number
+          longitude?: number
+          name?: string
+          phone?: string | null
+          updated_at?: string | null
+          working_hours?: string | null
         }
         Relationships: []
       }
@@ -92,6 +95,7 @@ export type Database = {
           reference_id: string | null
           transaction_type: string
           user_id: string
+          waste_type: Database["public"]["Enums"]["waste_type"] | null
         }
         Insert: {
           created_at?: string | null
@@ -100,6 +104,7 @@ export type Database = {
           reference_id?: string | null
           transaction_type: string
           user_id: string
+          waste_type?: Database["public"]["Enums"]["waste_type"] | null
         }
         Update: {
           created_at?: string | null
@@ -108,6 +113,7 @@ export type Database = {
           reference_id?: string | null
           transaction_type?: string
           user_id?: string
+          waste_type?: Database["public"]["Enums"]["waste_type"] | null
         }
         Relationships: []
       }
@@ -115,38 +121,77 @@ export type Database = {
         Row: {
           avatar_url: string | null
           city: string | null
-          created_at: string
+          created_at: string | null
           email: string
           full_name: string | null
           id: string
           region: string | null
-          updated_at: string
+          updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
           city?: string | null
-          created_at?: string
+          created_at?: string | null
           email: string
           full_name?: string | null
           id: string
           region?: string | null
-          updated_at?: string
+          updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
           city?: string | null
-          created_at?: string
+          created_at?: string | null
           email?: string
           full_name?: string | null
           id?: string
           region?: string | null
-          updated_at?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          latitude: number | null
+          longitude: number | null
+          status: Database["public"]["Enums"]["report_status"] | null
+          updated_at: string | null
+          user_id: string
+          waste_type: Database["public"]["Enums"]["waste_type"]
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          status?: Database["public"]["Enums"]["report_status"] | null
+          updated_at?: string | null
+          user_id: string
+          waste_type: Database["public"]["Enums"]["waste_type"]
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          status?: Database["public"]["Enums"]["report_status"] | null
+          updated_at?: string | null
+          user_id?: string
+          waste_type?: Database["public"]["Enums"]["waste_type"]
         }
         Relationships: []
       }
       rewards: {
         Row: {
-          active: boolean
+          active: boolean | null
           created_at: string | null
           description: Json
           id: string
@@ -157,7 +202,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          active?: boolean
+          active?: boolean | null
           created_at?: string | null
           description: Json
           id?: string
@@ -168,7 +213,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          active?: boolean
+          active?: boolean | null
           created_at?: string | null
           description?: Json
           id?: string
@@ -183,31 +228,34 @@ export type Database = {
       user_points: {
         Row: {
           created_at: string | null
+          glass_points: number | null
           id: string
-          interaction_points: number
-          recycling_points: number
-          reporting_points: number
-          total_points: number
+          metal_points: number | null
+          organic_points: number | null
+          plastic_points: number | null
+          total_points: number | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
+          glass_points?: number | null
           id?: string
-          interaction_points?: number
-          recycling_points?: number
-          reporting_points?: number
-          total_points?: number
+          metal_points?: number | null
+          organic_points?: number | null
+          plastic_points?: number | null
+          total_points?: number | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string | null
+          glass_points?: number | null
           id?: string
-          interaction_points?: number
-          recycling_points?: number
-          reporting_points?: number
-          total_points?: number
+          metal_points?: number | null
+          organic_points?: number | null
+          plastic_points?: number | null
+          total_points?: number | null
           updated_at?: string | null
           user_id?: string
         }
@@ -219,7 +267,7 @@ export type Database = {
           id: string
           points_spent: number
           reward_id: string
-          status: string
+          status: string | null
           user_id: string
         }
         Insert: {
@@ -227,7 +275,7 @@ export type Database = {
           id?: string
           points_spent: number
           reward_id: string
-          status?: string
+          status?: string | null
           user_id: string
         }
         Update: {
@@ -235,7 +283,7 @@ export type Database = {
           id?: string
           points_spent?: number
           reward_id?: string
-          status?: string
+          status?: string | null
           user_id?: string
         }
         Relationships: [
@@ -248,48 +296,91 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       waste_entries: {
         Row: {
-          created_at: string
-          date: string
+          created_at: string | null
           id: string
-          recyclable: boolean | null
-          updated_at: string
+          report_id: string
+          updated_at: string | null
           user_id: string
-          waste_type: string
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+          waste_type: Database["public"]["Enums"]["waste_type"]
           weight: number
         }
         Insert: {
-          created_at?: string
-          date: string
+          created_at?: string | null
           id?: string
-          recyclable?: boolean | null
-          updated_at?: string
+          report_id: string
+          updated_at?: string | null
           user_id: string
-          waste_type: string
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+          waste_type: Database["public"]["Enums"]["waste_type"]
           weight: number
         }
         Update: {
-          created_at?: string
-          date?: string
+          created_at?: string | null
           id?: string
-          recyclable?: boolean | null
-          updated_at?: string
+          report_id?: string
+          updated_at?: string | null
           user_id?: string
-          waste_type?: string
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+          waste_type?: Database["public"]["Enums"]["waste_type"]
           weight?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "waste_entries_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["user_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      report_status: "new" | "in_progress" | "resolved"
+      user_role: "citizen" | "admin"
+      waste_type: "organic" | "plastic" | "glass" | "metal"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -404,6 +495,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      report_status: ["new", "in_progress", "resolved"],
+      user_role: ["citizen", "admin"],
+      waste_type: ["organic", "plastic", "glass", "metal"],
+    },
   },
 } as const

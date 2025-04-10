@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
-import { AdminUser } from '@/types/supabase';
 import { toast } from '@/components/ui/use-toast';
+import { UserRoleRecord } from '@/types/supabase';
 
 interface AdminContextType {
   isAdmin: boolean;
@@ -27,31 +27,31 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
 
     setIsLoading(true);
     try {
-      // Use the generic query method to avoid type issues
+      // Use the user_roles table to check if the user is an admin
       const { data, error } = await supabase
-        .from('admin_users')
+        .from('user_roles')
         .select('*')
-        .eq('id', user.id)
-        .single();
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
 
       if (error) {
         console.error('Error checking admin status:', error);
         toast({
-          title: "Error checking admin status",
-          description: "Please try again later",
+          title: "خطأ في التحقق من حالة المسؤول",
+          description: "يرجى المحاولة مرة أخرى لاحقاً",
           variant: "destructive",
         });
         setIsAdmin(false);
       } else {
-        // Cast the data to AdminUser type to safely access the role property
-        const adminUser = data as AdminUser;
-        setIsAdmin(adminUser?.role === 'admin');
+        // Check if data exists to determine admin status
+        setIsAdmin(!!data);
       }
     } catch (error) {
       console.error('Error checking admin status:', error);
       toast({
-        title: "Error checking admin status",
-        description: "Please try again later",
+        title: "خطأ في التحقق من حالة المسؤول",
+        description: "يرجى المحاولة مرة أخرى لاحقاً",
         variant: "destructive",
       });
       setIsAdmin(false);
