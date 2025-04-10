@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
 import { Report, WasteType } from '@/types/supabase';
 import { Loader2, Upload, MapPin } from 'lucide-react';
+import LocationPicker from '@/components/map/LocationPicker';
 
 const reportFormSchema = z.object({
   wasteType: z.enum(['organic', 'plastic', 'glass', 'metal'], {
@@ -72,32 +74,6 @@ const ReportIssues = () => {
 
   useEffect(() => {
     fetchUserReports();
-    
-    // Get user's current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          toast({
-            title: t('error'),
-            description: t('locationError'),
-            variant: 'destructive',
-          });
-        }
-      );
-    } else {
-      toast({
-        title: t('error'),
-        description: t('geolocationNotSupported'),
-        variant: 'destructive',
-      });
-    }
   }, [user]);
 
   const uploadImage = async (file: File) => {
@@ -246,44 +222,47 @@ const ReportIssues = () => {
                 )}
               />
               
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" disabled={isSubmitting} asChild>
-                  <label htmlFor="upload-image" className="cursor-pointer">
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        {t('uploading')}
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="mr-2 h-4 w-4" />
-                        {t('uploadImage')}
-                      </>
-                    )}
-                  </label>
-                </Button>
-                <Input
-                  type="file"
-                  id="upload-image"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      uploadImage(file);
-                    }
-                  }}
-                />
-                {imageUrl && (
-                  <img src={imageUrl} alt="Uploaded" className="h-10 w-10 rounded-md object-cover" />
-                )}
-              </div>
-              
-              {location && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <MapPin className="mr-1 h-4 w-4" />
-                  {t('locationDetected')}: {location.lat.toFixed(2)}, {location.lng.toFixed(2)}
+              <div className="space-y-4">
+                <div>
+                  <FormLabel className="block mb-2">{t('location')}</FormLabel>
+                  <LocationPicker onLocationSelect={setLocation} initialLocation={location} />
                 </div>
-              )}
+                
+                <div>
+                  <FormLabel className="block mb-2">{t('image')}</FormLabel>
+                  <div className="flex items-center space-x-2">
+                    <Button variant="outline" disabled={isSubmitting} asChild>
+                      <label htmlFor="upload-image" className="cursor-pointer">
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            {t('uploading')}
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="mr-2 h-4 w-4" />
+                            {t('uploadImage')}
+                          </>
+                        )}
+                      </label>
+                    </Button>
+                    <Input
+                      type="file"
+                      id="upload-image"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          uploadImage(file);
+                        }
+                      }}
+                    />
+                    {imageUrl && (
+                      <img src={imageUrl} alt="Uploaded" className="h-10 w-10 rounded-md object-cover" />
+                    )}
+                  </div>
+                </div>
+              </div>
               
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
@@ -319,8 +298,14 @@ const ReportIssues = () => {
                 <CardContent>
                   <img src={report.image_url} alt="Reported Waste" className="w-full h-32 object-cover rounded-md mb-2" />
                   <p className="text-sm text-gray-600">{t('wasteType')}: {t(report.waste_type)}</p>
-                  <p className="text-sm text-gray-600">{t('status')}: {t(report.status)}</p>
+                  <p className="text-sm text-gray-600">{t('status')}: {t(report.status || 'new')}</p>
                   <p className="text-sm text-gray-600">{t('description')}: {report.description}</p>
+                  {report.latitude && report.longitude && (
+                    <p className="text-sm text-gray-600 flex items-center mt-1">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      {report.latitude.toFixed(5)}, {report.longitude.toFixed(5)}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             ))}

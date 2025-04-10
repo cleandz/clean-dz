@@ -17,6 +17,7 @@ import { AuthProvider } from "./contexts/auth";
 import { AdminProvider } from "./contexts/admin";
 import AppLayout from "./components/layout/AppLayout";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminReports from "./pages/AdminReports";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
                   <Route path="/rewards" element={<Rewards />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/reports" element={<AdminReports />} />
                 </Route>
                 <Route path="/auth" element={<Auth />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
