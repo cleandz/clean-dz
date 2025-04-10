@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,11 +15,12 @@ interface RewardCardProps {
   reward: Reward;
   userPoints: number;
   onRedeem: (reward: Reward) => void;
-  language: string;
+  language: 'ar' | 'en' | 'fr';
 }
 
 const RewardCard: React.FC<RewardCardProps> = ({ reward, userPoints, onRedeem, language }) => {
   const { t } = useTranslation(language);
+  const { formatNumber } = useLanguage();
   const canRedeem = userPoints >= reward.points_required;
 
   const handleRedeem = () => {
@@ -61,7 +63,7 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, userPoints, onRedeem, l
             {icon}
             {formatNumber(reward.points_required)} {t('points')}
           </Badge>
-          <Button variant="primary" onClick={handleRedeem} disabled={!canRedeem}>
+          <Button variant="default" onClick={handleRedeem} disabled={!canRedeem}>
             {canRedeem ? t('redeem') : t('notEnoughPoints')}
           </Button>
         </div>

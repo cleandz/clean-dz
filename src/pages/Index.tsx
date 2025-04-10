@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -5,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/i18n/translations';
 import { useStatistics } from '@/hooks/use-statistics';
-import { StatCard } from '@/components/home/StatCard';
+import StatCard from '@/components/home/StatCard';
 import { Recycle, Trash2, Map, AlertTriangle } from 'lucide-react';
 
 const Index = () => {

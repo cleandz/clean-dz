@@ -1,4 +1,3 @@
-
 export const translations = {
   ar: {
     // الصفحة الرئيسية
@@ -88,7 +87,7 @@ export const translations = {
     kg: "كغ",
     recyclable: "قابل للتدوير",
     action: "إجراء",
-    addRecord: "إضافة سجل",
+    addRecord: "��ضافة سجل",
     wasteRecords: "سجلات النفايات",
     totalWaste: "إجمالي النفايات",
     nonRecyclable: "غير قابل للتدوير",
@@ -423,7 +422,7 @@ export const translations = {
     siteTitle: "Clean DZ",
     
     // Description de l'application
-    appDescription: "Une application pour la gestion des déchets ménagers, aidant à améliorer l'environnement et à valoriser les déchets",
+    appDescription: "Une application pour la gestion des déchets ménagers, aidant �� améliorer l'environnement et à valoriser les déchets",
     
     // Pied de page
     usefulLinks: "Liens Utiles",
@@ -627,7 +626,79 @@ export type TranslationKey =
   | `auth.${keyof typeof translations.en.auth}`
   | `common.${keyof typeof translations.en.common}`
   | `navigation.${keyof typeof translations.en.navigation}`
-  | `rewards.${keyof typeof translations.en.rewards}`;
+  | `rewards.${keyof typeof translations.en.rewards}`
+  | 'authDescription'
+  | 'emailPlaceholder'
+  | 'password'
+  | 'passwordPlaceholder'
+  | 'fullName'
+  | 'fullNamePlaceholder'
+  | 'getStarted'
+  | 'startDescription'
+  | 'trackWaste'
+  | 'reportIssue'
+  | 'footerText'
+  | 'profileSettings'
+  | 'updateYourProfile'
+  | 'member'
+  | 'guest'
+  | 'yourFullName'
+  | 'city'
+  | 'yourCity'
+  | 'region'
+  | 'yourRegion'
+  | 'updating'
+  | 'updateProfile'
+  | 'refreshProfile'
+  | 'errorFetchingReports'
+  | 'locationError'
+  | 'geolocationNotSupported'
+  | 'errorUploadingImage'
+  | 'imageRequired'
+  | 'reportSubmitted'
+  | 'errorSubmittingReport'
+  | 'submitNewReport'
+  | 'provideDetails'
+  | 'organic'
+  | 'plastic'
+  | 'glass'
+  | 'metal'
+  | 'description'
+  | 'reportDetails'
+  | 'uploading'
+  | 'locationDetected'
+  | 'submitting'
+  | 'submitReport'
+  | 'yourReports'
+  | 'report'
+  | 'submittedOn'
+  | 'status'
+  | 'new'
+  | 'in_progress'
+  | 'resolved'
+  | 'noReportsYet'
+  | 'points'
+  | 'redeem'
+  | 'notEnoughPoints'
+  | 'errorFetchingRewards'
+  | 'errorFetchingPoints'
+  | 'rewardRedeemed'
+  | 'errorRedeemingReward'
+  | 'yourPoints'
+  | 'noRewardsAvailable'
+  | 'errorFetchingWasteEntries'
+  | 'selectReport'
+  | 'wasteEntrySubmitted'
+  | 'errorSubmittingWasteEntry'
+  | 'addWasteEntry'
+  | 'enterWasteDetails'
+  | 'weightInKg'
+  | 'selectExistingReport'
+  | 'addEntry'
+  | 'wasteEntries'
+  | 'yourWasteEntries'
+  | 'noWasteEntries'
+  | 'verified';
 
 // Hook for using translations
 export const useTranslation = (language: 'ar' | 'en' | 'fr') => {

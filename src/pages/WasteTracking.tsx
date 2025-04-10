@@ -266,11 +266,11 @@ const WasteTracking = () => {
                 {wasteEntries.map((entry) => (
                   <div key={entry.id} className="flex items-center justify-between border rounded-md p-2">
                     <div>
-                      <p className="text-sm font-medium">{t(entry.waste_type)}</p>
+                      <p className="text-sm font-medium">{t(entry.waste_type as any)}</p>
                       <p className="text-xs text-gray-500">{t('weight')}: {formatNumber(entry.weight)} kg</p>
                       <p className="text-xs text-gray-500">{t('report')} #{entry.report_id}</p>
                     </div>
-                    <Badge variant={entry.verified ? "success" : "secondary"}>
+                    <Badge variant={entry.verified ? "secondary" : "outline"}>
                       {entry.verified ? t('verified') : t('pending')}
                     </Badge>
                   </div>
