@@ -1,59 +1,21 @@
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/use-toast';
-import { useLanguage } from './LanguageContext';
-import { Profile, UserRole, UserRoleRecord } from '@/types/supabase';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Profile, UserRole } from '@/types/supabase';
+import { translations } from './translations';
+import AuthContext from './AuthContext';
+import { AuthProviderProps } from './types';
 
-type AuthContextType = {
-  session: Session | null;
-  user: User | null;
-  profile: Profile | null;
-  userRole: UserRole | null;
-  loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
-  signOut: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-  updateProfile: (updates: Partial<Profile>) => Promise<void>;
-  isAdmin: () => boolean;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage();
-
-  // Authentication translations
-  const translations = {
-    ar: {
-      signInSuccess: 'تم تسجيل الدخول بنجاح',
-      signOutSuccess: 'تم تسجيل الخروج بنجاح',
-      signUpSuccess: 'تم إنشاء حساب جديد بنجاح',
-      profileUpdateSuccess: 'تم تحديث الملف الشخصي بنجاح',
-      error: 'حدث خطأ'
-    },
-    en: {
-      signInSuccess: 'Signed in successfully',
-      signOutSuccess: 'Signed out successfully',
-      signUpSuccess: 'Account created successfully',
-      profileUpdateSuccess: 'Profile updated successfully',
-      error: 'An error occurred'
-    },
-    fr: {
-      signInSuccess: 'Connecté avec succès',
-      signOutSuccess: 'Déconnecté avec succès',
-      signUpSuccess: 'Compte créé avec succès',
-      profileUpdateSuccess: 'Profil mis à jour avec succès',
-      error: 'Une erreur est survenue'
-    }
-  };
 
   const t = translations[language];
 
@@ -111,17 +73,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUserRole = async (userId: string) => {
     try {
+      // Use has_role function instead of direct query
       const { data, error } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
+        .rpc('has_role', { _user_id: userId, _role: 'admin' });
 
       if (error) {
-        console.error('Error fetching user role:', error);
+        console.error('Error checking user role:', error);
         setUserRole('citizen'); // Default role
       } else {
-        setUserRole((data as UserRoleRecord).role);
+        setUserRole(data ? 'admin' : 'citizen');
       }
     } catch (error) {
       console.error('Error fetching user role:', error);
@@ -232,12 +192,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

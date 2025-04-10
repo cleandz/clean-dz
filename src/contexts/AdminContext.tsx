@@ -1,9 +1,8 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './AuthContext';
+import { useAuth } from './auth';
 import { toast } from '@/components/ui/use-toast';
-import { UserRoleRecord } from '@/types/supabase';
 
 interface AdminContextType {
   isAdmin: boolean;
@@ -27,13 +26,9 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
 
     setIsLoading(true);
     try {
-      // Use the user_roles table to check if the user is an admin
+      // Use the RPC function to check if user is admin
       const { data, error } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .maybeSingle();
+        .rpc('has_role', { _user_id: user.id, _role: 'admin' });
 
       if (error) {
         console.error('Error checking admin status:', error);
@@ -44,7 +39,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         });
         setIsAdmin(false);
       } else {
-        // Check if data exists to determine admin status
+        // Set admin status based on the response
         setIsAdmin(!!data);
       }
     } catch (error) {

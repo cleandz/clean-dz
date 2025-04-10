@@ -13,7 +13,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider } from "./contexts/auth";
 import { AdminProvider } from "./contexts/AdminContext";
 import AppLayout from "./components/layout/AppLayout";
 import AdminDashboard from "./pages/AdminDashboard";
