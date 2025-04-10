@@ -3,58 +3,76 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface Statistics {
-  totalUsers: number;
   totalReports: number;
-  totalCollectionPoints: number;
-  isLoading: boolean;
+  totalWaste: number;
+  totalUsers: number;
+  activeCollectionPoints: number;
 }
 
-export function useStatistics() {
-  const [stats, setStats] = useState<Statistics>({
-    totalUsers: 0,
+export const useStatistics = () => {
+  const [statistics, setStatistics] = useState<Statistics>({
     totalReports: 0,
-    totalCollectionPoints: 0,
-    isLoading: true
+    totalWaste: 0,
+    totalUsers: 0,
+    activeCollectionPoints: 0,
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    async function fetchStatistics() {
+    const fetchStatistics = async () => {
       try {
-        // Fetch total users count
-        const { count: userCount, error: userError } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true });
-
-        if (userError) throw userError;
-
-        // Fetch total collection points
-        const { count: collectionPointsCount, error: collectionPointsError } = await supabase
-          .from('collection_points')
-          .select('*', { count: 'exact', head: true });
-
-        if (collectionPointsError) throw collectionPointsError;
-
+        setIsLoading(true);
+        
         // Fetch total reports
         const { count: reportsCount, error: reportsError } = await supabase
           .from('reports')
           .select('*', { count: 'exact', head: true });
-
+        
         if (reportsError) throw reportsError;
-
-        setStats({
-          totalUsers: userCount || 0,
+        
+        // Fetch total waste collected
+        const { data: wasteData, error: wasteError } = await supabase
+          .from('waste_entries')
+          .select('weight');
+        
+        if (wasteError) throw wasteError;
+        
+        const totalWaste = wasteData
+          ? wasteData.reduce((acc, entry) => acc + Number(entry.weight), 0)
+          : 0;
+        
+        // Fetch total users
+        const { count: usersCount, error: usersError } = await supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true });
+        
+        if (usersError) throw usersError;
+        
+        // Fetch active collection points
+        const { count: collectionPointsCount, error: collectionPointsError } = await supabase
+          .from('collection_points')
+          .select('*', { count: 'exact', head: true });
+        
+        if (collectionPointsError) throw collectionPointsError;
+        
+        setStatistics({
           totalReports: reportsCount || 0,
-          totalCollectionPoints: collectionPointsCount || 0,
-          isLoading: false
+          totalWaste: Math.round(totalWaste * 100) / 100,
+          totalUsers: usersCount || 0,
+          activeCollectionPoints: collectionPointsCount || 0,
         });
-      } catch (error) {
-        console.error('Error fetching statistics:', error);
-        setStats(prev => ({ ...prev, isLoading: false }));
+        
+      } catch (err) {
+        console.error('Error fetching statistics:', err);
+        setError(err instanceof Error ? err : new Error('Unknown error fetching statistics'));
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
 
     fetchStatistics();
   }, []);
 
-  return stats;
-}
+  return { statistics, isLoading, error };
+};

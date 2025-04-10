@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useLanguage, SupportedLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/i18n/translations';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);

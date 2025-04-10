@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/i18n/translations';
-import { useAdmin } from '@/contexts/AdminContext';
+import { useAdmin } from '@/contexts/admin';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
       
       // Fetch total reports
       const { count: reportsCount, error: reportsError } = await supabase
-        .from('issue_reports')
+        .from('reports')
         .select('*', { count: 'exact', head: true });
       
       // Fetch total waste collected

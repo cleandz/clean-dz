@@ -1,18 +1,12 @@
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './auth';
+import { useAuth } from '@/contexts/auth';
 import { toast } from '@/components/ui/use-toast';
+import AdminContext from './AdminContext';
+import { AdminProviderProps } from './types';
 
-interface AdminContextType {
-  isAdmin: boolean;
-  isLoading: boolean;
-  checkAdminStatus: () => Promise<boolean>;
-}
-
-const AdminContext = createContext<AdminContextType | undefined>(undefined);
-
-export const AdminProvider = ({ children }: { children: ReactNode }) => {
+export const AdminProvider = ({ children }: AdminProviderProps) => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -72,12 +66,4 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AdminContext.Provider>
   );
-};
-
-export const useAdmin = () => {
-  const context = useContext(AdminContext);
-  if (context === undefined) {
-    throw new Error('useAdmin must be used within an AdminProvider');
-  }
-  return context;
 };

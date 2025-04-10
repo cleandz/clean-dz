@@ -14,7 +14,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/auth";
-import { AdminProvider } from "./contexts/AdminContext";
+import { AdminProvider } from "./contexts/admin";
 import AppLayout from "./components/layout/AppLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 
