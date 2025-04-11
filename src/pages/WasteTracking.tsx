@@ -15,6 +15,7 @@ import { toast } from '@/components/ui/use-toast';
 import { WasteType, WasteEntry, Report } from '@/types/supabase';
 import { useAuth } from '@/contexts/auth';
 import { Loader2, Scale, Trash2 } from 'lucide-react';
+import { TranslationKey } from '@/types/translation';
 
 const wasteEntryFormSchema = z.object({
   wasteType: z.enum(['organic', 'plastic', 'glass', 'metal']),
