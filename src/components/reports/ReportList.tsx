@@ -39,8 +39,8 @@ const ReportList: React.FC<ReportListProps> = ({ reports, isLoading }) => {
           </CardHeader>
           <CardContent>
             <img src={report.image_url} alt="Reported Waste" className="w-full h-32 object-cover rounded-md mb-2" />
-            <p className="text-sm text-gray-600">{t('wasteType')}: {t(report.waste_type)}</p>
-            <p className="text-sm text-gray-600">{t('status')}: {t(report.status || 'new')}</p>
+            <p className="text-sm text-gray-600">{t('wasteType')}: {t(report.waste_type as any)}</p>
+            <p className="text-sm text-gray-600">{t('status')}: {t(report.status as any || 'new')}</p>
             <p className="text-sm text-gray-600">{t('description')}: {report.description}</p>
             {report.latitude && report.longitude && (
               <p className="text-sm text-gray-600 flex items-center mt-1">

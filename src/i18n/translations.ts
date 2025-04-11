@@ -1,4 +1,5 @@
-import { formatNumber as formatNum } from '@/contexts/LanguageContext';
+
+import { SupportedLanguage } from '@/contexts/LanguageContext';
 
 export type Language = 'ar' | 'en' | 'fr';
 
@@ -288,7 +289,35 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     detectingLocation: 'جارٍ تحديد الموقع...',
     useCurrentLocation: 'استخدام الموقع الحالي',
     selectWasteType: 'اختر نوع النفايات',
+    // New translations for other components
+    adminPanel: 'لوحة الإدارة',
+    adminOnly: 'للمسؤولين فقط',
+    totalWasteCollected: 'إجمالي النفايات المجمعة',
+    kg: 'كجم',
+    manageUsers: 'إدارة المستخدمين',
+    analytics: 'التحليلات',
+    map: 'الخريطة',
+    settings: 'الإعدادات',
+    siteTitle: 'إدارة النفايات',
+    appDescription: 'منصة لإدارة النفايات وتحسين البيئة',
+    usefulLinks: 'روابط مفيدة',
+    contactUs: 'اتصل بنا',
+    phone: 'الهاتف',
+    allRightsReserved: 'جميع الحقوق محفوظة',
+    arabic: 'العربية',
+    english: 'الإنجليزية',
+    french: 'الفرنسية',
+    errorTitle: 'عنوان الخطأ',
+    errorFetching: 'خطأ في جلب البيانات',
+    authentication: 'المصادقة',
+    authDescription: 'قم بتسجيل الدخول للوصول إلى حسابك',
+    emailPlaceholder: 'أدخل بريدك الإلكتروني',
+    passwordPlaceholder: 'أدخل كلمة المرور',
+    fullNamePlaceholder: 'أدخل اسمك الكامل',
+    weight: 'الوزن',
+    pending: 'قيد الانتظار'
   },
+  
   en: {
     home: 'Home',
     wasteTracking: 'Waste Tracking',
@@ -417,7 +446,35 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     detectingLocation: 'Detecting location...',
     useCurrentLocation: 'Use Current Location',
     selectWasteType: 'Select waste type',
+    // New translations for other components
+    adminPanel: 'Admin Panel',
+    adminOnly: 'Admin Only',
+    totalWasteCollected: 'Total Waste Collected',
+    kg: 'kg',
+    manageUsers: 'Manage Users',
+    analytics: 'Analytics',
+    map: 'Map',
+    settings: 'Settings',
+    siteTitle: 'Waste Management',
+    appDescription: 'A platform for managing waste and improving the environment',
+    usefulLinks: 'Useful Links',
+    contactUs: 'Contact Us',
+    phone: 'Phone',
+    allRightsReserved: 'All Rights Reserved',
+    arabic: 'Arabic',
+    english: 'English',
+    french: 'French',
+    errorTitle: 'Error',
+    errorFetching: 'Error fetching data',
+    authentication: 'Authentication',
+    authDescription: 'Sign in to access your account',
+    emailPlaceholder: 'Enter your email',
+    passwordPlaceholder: 'Enter your password',
+    fullNamePlaceholder: 'Enter your full name',
+    weight: 'Weight',
+    pending: 'Pending'
   },
+  
   fr: {
     home: 'Accueil',
     wasteTracking: 'Suivi des déchets',
@@ -546,6 +603,33 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     detectingLocation: 'Détection de l\'emplacement...',
     useCurrentLocation: 'Utiliser l\'emplacement actuel',
     selectWasteType: 'Sélectionnez le type de déchets',
+    // New translations for other components
+    adminPanel: 'Panneau d\'administration',
+    adminOnly: 'Administrateur uniquement',
+    totalWasteCollected: 'Total des déchets collectés',
+    kg: 'kg',
+    manageUsers: 'Gérer les utilisateurs',
+    analytics: 'Analytique',
+    map: 'Carte',
+    settings: 'Paramètres',
+    siteTitle: 'Gestion des déchets',
+    appDescription: 'Une plateforme pour gérer les déchets et améliorer l\'environnement',
+    usefulLinks: 'Liens utiles',
+    contactUs: 'Contactez-nous',
+    phone: 'Téléphone',
+    allRightsReserved: 'Tous droits réservés',
+    arabic: 'Arabe',
+    english: 'Anglais',
+    french: 'Français',
+    errorTitle: 'Erreur',
+    errorFetching: 'Erreur lors de la récupération des données',
+    authentication: 'Authentification',
+    authDescription: 'Connectez-vous pour accéder à votre compte',
+    emailPlaceholder: 'Entrez votre email',
+    passwordPlaceholder: 'Entrez votre mot de passe',
+    fullNamePlaceholder: 'Entrez votre nom complet',
+    weight: 'Poids',
+    pending: 'En attente'
   }
 };
 
@@ -555,7 +639,12 @@ export const useTranslation = (language: Language) => {
   };
 
   const formatNumber = (num: number): string => {
-    return formatNum(num, language);
+    if (language === 'ar') {
+      return num.toLocaleString('ar-SA');
+    } else if (language === 'fr') {
+      return num.toLocaleString('fr-FR');
+    }
+    return num.toLocaleString('en-US');
   };
 
   return { t, formatNumber };

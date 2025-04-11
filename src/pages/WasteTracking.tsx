@@ -29,8 +29,8 @@ const wasteEntryFormSchema = z.object({
 type WasteEntryFormValues = z.infer<typeof wasteEntryFormSchema>;
 
 const WasteTracking = () => {
-  const { language, dir, formatNumber } = useLanguage();
-  const { t } = useTranslation(language);
+  const { language, dir } = useLanguage();
+  const { t, formatNumber } = useTranslation(language);
   const { user } = useAuth();
   
   const [reports, setReports] = useState<Report[]>([]);
@@ -266,7 +266,7 @@ const WasteTracking = () => {
                 {wasteEntries.map((entry) => (
                   <div key={entry.id} className="flex items-center justify-between border rounded-md p-2">
                     <div>
-                      <p className="text-sm font-medium">{t(entry.waste_type as any)}</p>
+                      <p className="text-sm font-medium">{t(entry.waste_type as TranslationKey)}</p>
                       <p className="text-xs text-gray-500">{t('weight')}: {formatNumber(entry.weight)} kg</p>
                       <p className="text-xs text-gray-500">{t('report')} #{entry.report_id}</p>
                     </div>

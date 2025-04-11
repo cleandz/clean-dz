@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,8 +18,7 @@ interface RewardCardProps {
 }
 
 const RewardCard: React.FC<RewardCardProps> = ({ reward, userPoints, onRedeem, language }) => {
-  const { t } = useTranslation(language);
-  const { formatNumber } = useLanguage();
+  const { t, formatNumber } = useTranslation(language);
   const canRedeem = userPoints >= reward.points_required;
 
   const handleRedeem = () => {
@@ -63,7 +61,7 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, userPoints, onRedeem, l
             {icon}
             {formatNumber(reward.points_required)} {t('points')}
           </Badge>
-          <Button variant="default" onClick={handleRedeem} disabled={!canRedeem}>
+          <Button onClick={handleRedeem} disabled={!canRedeem}>
             {canRedeem ? t('redeem') : t('notEnoughPoints')}
           </Button>
         </div>
@@ -73,8 +71,8 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, userPoints, onRedeem, l
 };
 
 const Rewards = () => {
-  const { language, dir, formatNumber } = useLanguage();
-  const { t } = useTranslation(language);
+  const { language, dir } = useLanguage();
+  const { t, formatNumber } = useTranslation(language);
   const { user } = useAuth();
   
   const [rewards, setRewards] = useState<Reward[]>([]);
@@ -101,7 +99,6 @@ const Rewards = () => {
       
       if (error) throw error;
       
-      // Convert the JSON data to the expected type
       const typedRewards = data.map(reward => ({
         ...reward,
         name: reward.name as unknown as MultilingualContent,
@@ -164,7 +161,6 @@ const Rewards = () => {
     
     setIsRedeeming(true);
     try {
-      // Optimistically update the user's points
       setUserPoints(prevPoints => {
         if (prevPoints && prevPoints.total_points !== null) {
           return { ...prevPoints, total_points: prevPoints.total_points - reward.points_required };
@@ -188,7 +184,6 @@ const Rewards = () => {
         description: t('rewardRedeemed'),
       });
       
-      // Refresh user points
       await fetchUserPoints();
     } catch (error) {
       console.error('Error redeeming reward:', error);
@@ -197,7 +192,6 @@ const Rewards = () => {
         description: t('errorRedeemingReward'),
         variant: 'destructive',
       });
-      // Revert the optimistic update if the transaction fails
       await fetchUserPoints();
     } finally {
       setIsRedeeming(false);
