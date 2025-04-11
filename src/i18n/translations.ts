@@ -102,7 +102,7 @@ export type TranslationKey =
   | 'resolved'
   | 'points'
   | 'redeem'
-  // صفحة الإدارة الجديدة
+  // Admin page
   | 'manageReports'
   | 'filterByStatus'
   | 'allReports'
@@ -127,10 +127,37 @@ export type TranslationKey =
   | 'errorDeletingReport'
   | 'accessDenied'
   | 'adminAccessRequired'
-  // مكون LocationPicker
+  // Location picker component
   | 'detectingLocation'
   | 'useCurrentLocation'
-  | 'selectWasteType';
+  | 'selectWasteType'
+  // Other components
+  | 'adminPanel'
+  | 'adminOnly'
+  | 'totalWasteCollected'
+  | 'kg'
+  | 'manageUsers'
+  | 'analytics'
+  | 'map'
+  | 'settings'
+  | 'siteTitle'
+  | 'appDescription'
+  | 'usefulLinks'
+  | 'contactUs'
+  | 'phone'
+  | 'allRightsReserved'
+  | 'arabic'
+  | 'english'
+  | 'french'
+  | 'errorTitle'
+  | 'errorFetching'
+  | 'authentication'
+  | 'authDescription'
+  | 'emailPlaceholder'
+  | 'passwordPlaceholder'
+  | 'fullNamePlaceholder'
+  | 'weight'
+  | 'pending';
 
 const translations: Record<Language, Record<TranslationKey, string>> = {
   ar: {
@@ -166,7 +193,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     totalReports: 'إجمالي البلاغات',
     totalUsers: 'إجمالي المستخدمين',
     getStarted: 'ابدأ الآن',
-    startDescription: 'اختر من الخيارات أدناه للمساهمة في الحفاظ على البيئة',
+    startDescription: 'اختر من الخيارات أدناه لل��ساهمة في الحفاظ على البيئة',
     trackWaste: 'تتبع النفايات',
     reportIssue: 'الإبلاغ عن مشكلة',
     footerText: 'معاً لبيئة أنظف وأكثر استدامة',
