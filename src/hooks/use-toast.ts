@@ -1,5 +1,3 @@
-
-// src/hooks/use-toast.ts
 import * as React from "react"
 
 import type {
@@ -7,7 +5,7 @@ import type {
   ToastProps,
 } from "@/components/ui/toast"
 
-const TOAST_LIMIT = 5
+const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
 
 type ToasterToast = ToastProps & {
@@ -27,7 +25,7 @@ const actionTypes = {
 let count = 0
 
 function genId() {
-  count = (count + 1) % Number.MAX_VALUE
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
   return count.toString()
 }
 
@@ -44,11 +42,11 @@ type Action =
     }
   | {
       type: ActionType["DISMISS_TOAST"]
-      toastId?: string
+      toastId?: ToasterToast["id"]
     }
   | {
       type: ActionType["REMOVE_TOAST"]
-      toastId?: string
+      toastId?: ToasterToast["id"]
     }
 
 interface State {
@@ -139,7 +137,7 @@ function dispatch(action: Action) {
   })
 }
 
-interface Toast extends Omit<ToasterToast, "id"> {}
+type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
   const id = genId()
@@ -149,8 +147,7 @@ function toast({ ...props }: Toast) {
       type: "UPDATE_TOAST",
       toast: { ...props, id },
     })
-  const dismiss = () =>
-    dispatch({ type: "DISMISS_TOAST", toastId: id })
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
 
   dispatch({
     type: "ADD_TOAST",
@@ -165,7 +162,7 @@ function toast({ ...props }: Toast) {
   })
 
   return {
-    id,
+    id: id,
     dismiss,
     update,
   }
@@ -187,8 +184,7 @@ function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) =>
-      dispatch({ type: "DISMISS_TOAST", toastId }),
+    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   }
 }
 

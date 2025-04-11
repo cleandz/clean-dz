@@ -1,286 +1,293 @@
-import React, { useState, useEffect } from 'react';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+
+import React, { useState } from 'react';
+import { 
+  Trash2, Plus, ArrowRight, Save, RefreshCcw
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Badge } from '@/components/ui/badge';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useTranslation } from '@/i18n/translations';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
-import { WasteType, WasteEntry, Report } from '@/types/supabase';
-import { useAuth } from '@/contexts/auth';
-import { Loader2, Scale, Trash2 } from 'lucide-react';
-import { TranslationKey } from '@/types/translation';
+import { useToast } from '@/components/ui/use-toast';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
-const wasteEntryFormSchema = z.object({
-  wasteType: z.enum(['organic', 'plastic', 'glass', 'metal']),
-  weight: z.string().refine(value => {
-    const num = Number(value);
-    return !isNaN(num) && num > 0;
-  }, {
-    message: "Weight must be a positive number.",
-  }),
-});
-
-type WasteEntryFormValues = z.infer<typeof wasteEntryFormSchema>;
+interface WasteEntry {
+  id: string;
+  date: string;
+  type: string;
+  weight: number;
+  recyclable: boolean;
+}
 
 const WasteTracking = () => {
-  const { language, dir } = useLanguage();
-  const { t, formatNumber } = useTranslation(language);
-  const { user } = useAuth();
+  const { toast } = useToast();
+  const [entries, setEntries] = useState<WasteEntry[]>([
+    { id: '1', date: '2025-04-01', type: 'بلاستيك', weight: 2.5, recyclable: true },
+    { id: '2', date: '2025-04-02', type: 'ورق', weight: 1.8, recyclable: true },
+    { id: '3', date: '2025-04-03', type: 'طعام', weight: 3.2, recyclable: false },
+  ]);
   
-  const [reports, setReports] = useState<Report[]>([]);
-  const [wasteEntries, setWasteEntries] = useState<WasteEntry[]>([]);
-  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  
-  const form = useForm<WasteEntryFormValues>({
-    resolver: zodResolver(wasteEntryFormSchema),
-    defaultValues: {
-      wasteType: 'plastic',
-      weight: '',
-    },
+  const [newEntry, setNewEntry] = useState({
+    date: new Date().toISOString().split('T')[0],
+    type: '',
+    weight: 0,
+    recyclable: false
   });
 
-  useEffect(() => {
-    if (user) {
-      fetchReports();
-      fetchWasteEntries();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user]);
-
-  const fetchReports = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('reports')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      setReports(data || []);
-    } catch (error) {
-      console.error('Error fetching reports:', error);
-      toast({
-        title: t('error'),
-        description: t('errorFetchingReports'),
-        variant: 'destructive',
-      });
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setNewEntry({
+      ...newEntry,
+      [name]: type === 'checkbox' ? checked : value
+    });
   };
 
-  const fetchWasteEntries = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('waste_entries')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      setWasteEntries(data || []);
-    } catch (error) {
-      console.error('Error fetching waste entries:', error);
-      toast({
-        title: t('error'),
-        description: t('errorFetchingWasteEntries'),
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSelectChange = (name: string, value: string) => {
+    setNewEntry({
+      ...newEntry,
+      [name]: value
+    });
   };
 
-  const handleSubmit = async (data: WasteEntryFormValues) => {
-    if (!user) {
+  const addWasteEntry = () => {
+    if (!newEntry.type || newEntry.weight <= 0) {
       toast({
-        title: t('error'),
-        description: t('loginRequired'),
-        variant: 'destructive',
+        title: "خطأ",
+        description: "يرجى ملء جميع الحقول المطلوبة",
+        variant: "destructive",
       });
       return;
     }
     
-    if (!selectedReport) {
-      toast({
-        title: t('error'),
-        description: t('selectReport'),
-        variant: 'destructive',
-      });
-      return;
-    }
+    const entry: WasteEntry = {
+      id: Date.now().toString(),
+      date: newEntry.date,
+      type: newEntry.type,
+      weight: newEntry.weight,
+      recyclable: newEntry.recyclable
+    };
     
-    try {
-      setIsSubmitting(true);
-      
-      // Create a new waste entry
-      const { error } = await supabase
-        .from('waste_entries')
-        .insert({
-          report_id: selectedReport.id,
-          user_id: user.id,
-          waste_type: data.wasteType as WasteType,
-          weight: Number(data.weight),
-          verified: false
-        });
-      
-      if (error) throw error;
-      
-      toast({
-        title: t('success'),
-        description: t('wasteEntrySubmitted'),
-      });
-      
-      // Reset form
-      form.reset();
-      setSelectedReport(null);
-      
-      // Reload entries
-      fetchWasteEntries();
-      
-    } catch (error) {
-      console.error('Error submitting waste entry:', error);
-      toast({
-        title: t('error'),
-        description: t('errorSubmittingWasteEntry'),
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    setEntries([...entries, entry]);
+    
+    // إعادة تعيين النموذج
+    setNewEntry({
+      date: new Date().toISOString().split('T')[0],
+      type: '',
+      weight: 0,
+      recyclable: false
+    });
+    
+    toast({
+      title: "تمت الإضافة بنجاح",
+      description: "تم إضافة بيانات النفايات بنجاح",
+    });
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-green"></div>
-      </div>
-    );
-  }
+  const removeEntry = (id: string) => {
+    setEntries(entries.filter(entry => entry.id !== id));
+    toast({
+      title: "تم الحذف",
+      description: "تم حذف السجل بنجاح",
+    });
+  };
+
+  const getTotalWeight = () => {
+    return entries.reduce((total, entry) => total + entry.weight, 0).toFixed(2);
+  };
+  
+  const getRecyclableWeight = () => {
+    return entries.filter(entry => entry.recyclable)
+      .reduce((total, entry) => total + entry.weight, 0).toFixed(2);
+  };
+  
+  const getNonRecyclableWeight = () => {
+    return entries.filter(entry => !entry.recyclable)
+      .reduce((total, entry) => total + entry.weight, 0).toFixed(2);
+  };
 
   return (
-    <div className={`container mx-auto ${dir === 'rtl' ? 'rtl' : 'ltr'}`}>
-      <div className="flex flex-col md:flex-row items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">{t('wasteTracking')}</h1>
-        <div className="flex items-center">
-          <Trash2 className="h-5 w-5 mr-2 text-primary-green" />
-          <span className="text-gray-600">{t('trackWaste')}</span>
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col rtl">
+      <Navbar />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Waste Entry Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('addWasteEntry')}</CardTitle>
-            <CardDescription>{t('enterWasteDetails')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="wasteType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('wasteType')}</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t('selectWasteType')} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="organic">{t('organic')}</SelectItem>
-                          <SelectItem value="plastic">{t('plastic')}</SelectItem>
-                          <SelectItem value="glass">{t('glass')}</SelectItem>
-                          <SelectItem value="metal">{t('metal')}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="weight"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('weightInKg')}</FormLabel>
-                      <FormControl>
-                        <Input placeholder="0.5" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="grid gap-2">
-                  <FormLabel>{t('selectReport')}</FormLabel>
-                  <Select onValueChange={(value) => {
-                      const selected = reports.find(report => report.id === value);
-                      setSelectedReport(selected || null);
-                    }}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('selectExistingReport')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {reports.map((report) => (
-                        <SelectItem key={report.id} value={report.id}>
-                          {t('report')} #{report.id} - {new Date(report.created_at).toLocaleDateString(language)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {t('addEntry')}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-        
-        {/* Waste Entries List */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('wasteEntries')}</CardTitle>
-            <CardDescription>{t('yourWasteEntries')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {wasteEntries.length === 0 ? (
-              <p>{t('noWasteEntries')}</p>
-            ) : (
-              <div className="space-y-3">
-                {wasteEntries.map((entry) => (
-                  <div key={entry.id} className="flex items-center justify-between border rounded-md p-2">
-                    <div>
-                      <p className="text-sm font-medium">{t(entry.waste_type as TranslationKey)}</p>
-                      <p className="text-xs text-gray-500">{t('weight')}: {formatNumber(entry.weight)} kg</p>
-                      <p className="text-xs text-gray-500">{t('report')} #{entry.report_id}</p>
-                    </div>
-                    <Badge variant={entry.verified ? "secondary" : "outline"}>
-                      {entry.verified ? t('verified') : t('pending')}
-                    </Badge>
+      <main className="flex-grow py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold mb-6">تتبع النفايات</h1>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">إجمالي النفايات</p>
+                    <h3 className="text-2xl font-bold">{getTotalWeight()} كغ</h3>
                   </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                  <div className="p-3 bg-primary-green/10 rounded-full">
+                    <Trash2 className="h-6 w-6 text-primary-green" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">قابل للتدوير</p>
+                    <h3 className="text-2xl font-bold">{getRecyclableWeight()} كغ</h3>
+                  </div>
+                  <div className="p-3 bg-secondary-blue/10 rounded-full">
+                    <RefreshCcw className="h-6 w-6 text-secondary-blue" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">غير قابل للتدوير</p>
+                    <h3 className="text-2xl font-bold">{getNonRecyclableWeight()} كغ</h3>
+                  </div>
+                  <div className="p-3 bg-red-500/10 rounded-full">
+                    <ArrowRight className="h-6 w-6 text-red-500" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="md:col-span-1">
+              <CardHeader>
+                <CardTitle>إضافة سجل جديد</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="date">التاريخ</Label>
+                    <Input 
+                      id="date" 
+                      name="date" 
+                      type="date" 
+                      value={newEntry.date} 
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="type">نوع النفايات</Label>
+                    <Select 
+                      onValueChange={(value) => handleSelectChange('type', value)}
+                      value={newEntry.type}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="اختر نوع النفايات" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="بلاستيك">بلاستيك</SelectItem>
+                        <SelectItem value="ورق">ورق</SelectItem>
+                        <SelectItem value="زجاج">زجاج</SelectItem>
+                        <SelectItem value="معدن">معدن</SelectItem>
+                        <SelectItem value="طعام">طعام</SelectItem>
+                        <SelectItem value="أخرى">أخرى</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="weight">الوزن (كغ)</Label>
+                    <Input 
+                      id="weight" 
+                      name="weight" 
+                      type="number" 
+                      min="0"
+                      step="0.1"
+                      value={newEntry.weight} 
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <input 
+                      id="recyclable" 
+                      name="recyclable" 
+                      type="checkbox" 
+                      className="w-4 h-4 text-primary-green"
+                      checked={newEntry.recyclable} 
+                      onChange={handleInputChange}
+                    />
+                    <Label htmlFor="recyclable">قابل للتدوير</Label>
+                  </div>
+                  
+                  <Button className="w-full" onClick={addWasteEntry}>
+                    <Plus className="mr-2 h-4 w-4" /> إضافة سجل
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>سجلات النفايات</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="p-3 text-right border-b">التاريخ</th>
+                        <th className="p-3 text-right border-b">النوع</th>
+                        <th className="p-3 text-right border-b">الوزن (كغ)</th>
+                        <th className="p-3 text-right border-b">قابل للتدوير</th>
+                        <th className="p-3 text-right border-b">إجراء</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {entries.length > 0 ? (
+                        entries.map((entry) => (
+                          <tr key={entry.id} className="border-b hover:bg-gray-50">
+                            <td className="p-3">{entry.date}</td>
+                            <td className="p-3">{entry.type}</td>
+                            <td className="p-3">{entry.weight}</td>
+                            <td className="p-3">
+                              {entry.recyclable ? (
+                                <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">نعم</span>
+                              ) : (
+                                <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">لا</span>
+                              )}
+                            </td>
+                            <td className="p-3">
+                              <Button variant="ghost" size="sm" onClick={() => removeEntry(entry.id)}>
+                                <Trash2 className="h-4 w-4 text-red-500" />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={5} className="p-3 text-center text-gray-500">
+                            لا توجد سجلات بعد
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="mt-4 text-left">
+                  <Button variant="outline">
+                    <Save className="mr-2 h-4 w-4" /> حفظ التقرير
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 };
